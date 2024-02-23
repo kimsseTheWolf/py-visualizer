@@ -1,0 +1,85 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.main-window {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+}
+.title-bar {
+  width: 100%;
+  height: fit-content;
+  margin: 0;
+  padding: 10px;
+  padding-bottom: 6px;
+  display: flex;
+  flex-direction: row;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+.title-bar .item {
+  margin-right: 5px;
+}
+.title-bar .column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.title-bar .row {
+  display: flex;
+  flex-direction: row;
+}
+.file-name {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+
+.main-body {
+  display: flex;
+  flex-direction: row;
+  flex: auto;
+  margin: 0;
+  padding: 0;
+}
+.block-panel {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  flex: 1;
+}
+.work-panel {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  flex: 2;
+}
+.code-panel {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  flex: 2;
+}
+.panel {
+  border-right-style: solid;
+  border-right-color: rgba(0, 0, 0, 0.1);
+  border-right-width: 1px;
+}
