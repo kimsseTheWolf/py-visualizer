@@ -27,6 +27,7 @@ const mainBoxBottomMargin = computed(()=>{
 function updateActiveID(id, title) {
     interfaceControl.value.currActiveID = id
     interfaceControl.value.currActiveTitle = title
+    interfaceControl.value.expanding = false
     console.log("Updated")
 }
 </script>

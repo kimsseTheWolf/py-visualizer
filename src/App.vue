@@ -7,18 +7,37 @@ import {
   ExportOutlined, 
   CopyOutlined, 
   PaperClipOutlined,
-  EditOutlined
+  EditOutlined,
+  EyeOutlined,
+  EyeInvisibleOutlined,
+  InfoCircleOutlined,
+  GithubOutlined
 } from '@ant-design/icons-vue'
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import MenuBtn from "./components/MenuBtn.vue"
 import BlockSectionSelector from "./components/BlockSectionSelector.vue";
 
 const fileName = ref("")
 const interfaceControl = ref({
-  showFileNameInput: false
+  showFileNameInput: false,
+  showCodePreview: true
 })
 const interfaceData = ref({
   blockTabActiveKey: "io"
+})
+const VSOPTIONS = {
+  automaticLayout: true,
+  formatOnType: true,
+  formatOnPaste: true,
+  readOnly: true
+}
+const WorkPanelFlex = computed(()=> {
+  if (interfaceControl.value.showCodePreview) {
+    return {flex: "2"}
+  }
+  else {
+    return {flex: "4"}
+  }
 })
 
 </script>
@@ -78,10 +97,31 @@ const interfaceData = ref({
             </template>
           </Dropdown>
           <Dropdown>
-            <MenuBtn>Tools</MenuBtn>
+            <MenuBtn>Views</MenuBtn>
+            <template #overlay>
+              <Menu>
+                <MenuItem key="1" @click="interfaceControl.showCodePreview = !interfaceControl.showCodePreview">
+                  <EyeOutlined v-if="!interfaceControl.showCodePreview"/>
+                  <EyeInvisibleOutlined v-if="interfaceControl.showCodePreview"/>
+                  Toggle Code Preview
+                </MenuItem>
+              </Menu>
+            </template>
           </Dropdown>
           <Dropdown>
-            <MenuBtn>Others</MenuBtn>
+            <MenuBtn>Help</MenuBtn>
+            <template #overlay>
+              <Menu>
+                <MenuItem key="1">
+                  <InfoCircleOutlined/>
+                  About
+                </MenuItem>
+                <MenuItem key="2">
+                  <GithubOutlined/>
+                  GitHub
+                </MenuItem>
+              </Menu>
+            </template>
           </Dropdown>
         </div>
       </div>
@@ -92,8 +132,14 @@ const interfaceData = ref({
         <BlockSectionSelector/>
         
       </div>
-      <div class="work-panel panel"></div>
-      <div class="code-panel panel"></div>
+      <div class="work-panel panel" :style="WorkPanelFlex"></div>
+      <div class="code-panel panel" v-if="interfaceControl.showCodePreview">
+        <vue-monaco-editor
+        theme="vs-light"
+        language="python"
+        :options="VSOPTIONS"
+        />
+      </div>
     </div>
   </div>
 </template>
