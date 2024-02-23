@@ -1,5 +1,6 @@
 <script setup>
-import { Dropdown, Menu, MenuItem, Button, Input } from 'ant-design-vue';
+import draggable from "vuedraggable"
+import { Dropdown, Menu, MenuItem, Button, Input, Tabs, TabPane } from 'ant-design-vue';
 import {
   UploadOutlined, 
   SaveOutlined, 
@@ -10,10 +11,14 @@ import {
 } from '@ant-design/icons-vue'
 import { ref } from 'vue';
 import MenuBtn from "./components/MenuBtn.vue"
+import BlockSectionSelector from "./components/BlockSectionSelector.vue";
 
 const fileName = ref("")
 const interfaceControl = ref({
   showFileNameInput: false
+})
+const interfaceData = ref({
+  blockTabActiveKey: "io"
 })
 
 </script>
@@ -21,9 +26,10 @@ const interfaceControl = ref({
 <template>
   <div class="main-window">
     <div class="title-bar">
+      <div style="width: 20px;">&nbsp;</div>
       <div class="column item">
         <div class="row">
-          <div class="file-name item">
+          <div class="file-name item" style="margin-left: 5px;">
             <div v-if="!interfaceControl.showFileNameInput">{{ fileName === "" ? "New File" : fileName }}</div>
             <Input v-if="interfaceControl.showFileNameInput" placeholder="New File Name" v-model:value="fileName"/>
           </div>
@@ -82,7 +88,10 @@ const interfaceControl = ref({
     </div>
 
     <div class="main-body">
-      <div class="block-panel panel"></div>
+      <div class="block-panel panel">
+        <BlockSectionSelector/>
+        
+      </div>
       <div class="work-panel panel"></div>
       <div class="code-panel panel"></div>
     </div>
