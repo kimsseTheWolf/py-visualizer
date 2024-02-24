@@ -1,0 +1,31 @@
+{
+    "id": "basic.io",
+    "name": {
+        "en-US": "Input / Output Control",
+        "zh-CN": "输入，输出控制"
+    },
+    "print": {
+        "visualize": {
+            "default": "Print <[0]{accept:var&value}> to screen",
+            "en-US": "Print <[0]{accept:var&value}> to screen",
+            "zh-CN": "向屏幕输出<[0]{accept:var&value}>"
+        },
+        "code": "print(<0>)"
+    },
+    "input": {
+        "visualize": {
+            "default": "Get user input and set the value to <[0]{accept:var}>",
+            "en-US": "Get user input and set the value to <[0]{accept:var}>",
+            "zh-CN": "获取用户输入，并且将输入值赋值给<[0]{accept:var}>"
+        },
+        "code": "<0> = input()"
+    },
+    "inputWithPrompt": {
+        "visualize": {
+            "default": "Prompt: <[0]{accept:var&value}> to the user, and set the value to <[1]{accept:var}>",
+            "en-US": "Prompt: <[0]{accept:var&value}> to the user, and set the value to <[1]{accept:var}>",
+            "zh-CN": "提示用户输入：<[0]{accept:var&value}>，并且将输入值赋值给<[1]{accept:var}>"
+        },
+        "code": "<0> = input(<1>)"
+    }
+}
