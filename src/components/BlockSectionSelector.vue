@@ -3,17 +3,27 @@ import { Button } from 'ant-design-vue';
 import {ArrowDownOutlined, ArrowUpOutlined} from '@ant-design/icons-vue'
 import {ref, computed} from "vue"
 import BlockSelectionItem from './BlockSelectionItem.vue';
+import {getCurrentLanguage} from "../js/languageUtil"
+import {getBlockInfo} from "../js/blockLoaderUtil"
 const interfaceControl = ref({
     expanding: false,
     currActiveID: "io",
     currActiveTitle: "Input and Output"
 })
 
-const tabsInfo = ref([
-    {"id": "io", "name":"Input and Output"},
-    {"id": "cf", "name":"Control Flow"},
-    {"id": "var", "name":"Variables"},
-])
+const tabsInfo = computed(()=>{
+    let list = getBlockInfo()
+    console.log(list[0]["name"][getCurrentLanguage()])
+    let result = []
+    for (let i = 0; i < list.length; i++) {
+        result.push({
+            "id": list[i]["id"],
+            "name": list[i]["name"][getCurrentLanguage()],
+            "blocks": list[i]["blocks"]
+        })
+    }
+    return result
+})
 
 const mainBoxBottomMargin = computed(()=>{
     if (interfaceControl.value.expanding) {

@@ -18,7 +18,7 @@ export const languages = {
 export function initializeLanguage() {
     if (isKeyNotSetup(localStorageKeys.language)) {
         // initialize a var for the language
-        localStorage.setItem(localStorageKeys.language, languages.enUS)
+        localStorage.setItem(localStorageKeys.language, languages.enUS.value)
     }
 }
 

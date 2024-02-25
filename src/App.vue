@@ -1,6 +1,6 @@
 <script setup>
 import draggable from "vuedraggable"
-import { Dropdown, Menu, MenuItem, Button, Input, Tabs, TabPane } from 'ant-design-vue';
+import { Dropdown, Menu, MenuItem, MenuDivider, Button, Input, Tabs, TabPane, Modal, ButtonGroup, Select, SelectOption } from 'ant-design-vue';
 import {
   UploadOutlined, 
   SaveOutlined, 
@@ -11,19 +11,26 @@ import {
   EyeOutlined,
   EyeInvisibleOutlined,
   InfoCircleOutlined,
-  GithubOutlined
+  GithubOutlined,
+  GlobalOutlined
 } from '@ant-design/icons-vue'
 import { ref, computed } from 'vue';
 import MenuBtn from "./components/MenuBtn.vue"
 import BlockSectionSelector from "./components/BlockSectionSelector.vue";
+import {depre_testImport} from "./js/blockLoaderUtil"
+import {initializeLanguage, languages, getCurrentLanguage, setCurrentLanguage} from "./js/languageUtil"
+
+initializeLanguage()
 
 const fileName = ref("")
 const interfaceControl = ref({
   showFileNameInput: false,
-  showCodePreview: true
+  showCodePreview: true,
+  showLanguageModal: false,
 })
 const interfaceData = ref({
-  blockTabActiveKey: "io"
+  blockTabActiveKey: "io",
+  currentSelectedLang: getCurrentLanguage()
 })
 const VSOPTIONS = {
   automaticLayout: true,
@@ -39,7 +46,6 @@ const WorkPanelFlex = computed(()=> {
     return {flex: "4"}
   }
 })
-
 </script>
 
 <template>
@@ -57,7 +63,7 @@ const WorkPanelFlex = computed(()=> {
             Change
           </Button>
         </div>
-        <div class="row">
+        <div class="row" style="margin-bottom: 0;">
           <Dropdown>
             <MenuBtn>File</MenuBtn>
             <template #overlay>
@@ -92,6 +98,11 @@ const WorkPanelFlex = computed(()=> {
                 <MenuItem key="2">
                   <PaperClipOutlined/>
                   Paste
+                </MenuItem>
+                <MenuDivider/>
+                <MenuItem key="3" @click="interfaceControl.showLanguageModal = true">
+                  <GlobalOutlined/>
+                  Languages
                 </MenuItem>
               </Menu>
             </template>
@@ -142,6 +153,20 @@ const WorkPanelFlex = computed(()=> {
       </div>
     </div>
   </div>
+
+
+  <Modal title="Choose a language" v-model:visible="interfaceControl.showLanguageModal">
+    <div style="display: flex; flex-direction: column;">
+      <div>Choose an desired language from the dropbox below, you need to refresh your page to apply changes:</div>
+      <Select v-model:value="interfaceData.currentSelectedLang">
+        <SelectOption v-for="i in languages" :value="i.value">{{ i.name }}</SelectOption>
+      </Select>
+    </div>
+    <template #footer>
+      <Button type="primary" @click="setCurrentLanguage(interfaceData.currentSelectedLang)">Apply</Button>
+      <Button @click="interfaceControl.showLanguageModal = !interfaceControl.showLanguageModal">Cancle</Button>
+    </template>
+  </Modal>
 </template>
 
 <style scoped>
