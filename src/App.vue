@@ -17,8 +17,9 @@ import {
 import { ref, computed } from 'vue';
 import MenuBtn from "./components/MenuBtn.vue"
 import BlockSectionSelector from "./components/BlockSectionSelector.vue";
-import {depre_testImport} from "./js/blockLoaderUtil"
+import BlockPanel from "./components/BlockPanel.vue";
 import {initializeLanguage, languages, getCurrentLanguage, setCurrentLanguage} from "./js/languageUtil"
+import {getBlockInfo} from "./js/blockLoaderUtil"
 
 initializeLanguage()
 
@@ -30,7 +31,7 @@ const interfaceControl = ref({
 })
 const interfaceData = ref({
   blockTabActiveKey: "io",
-  currentSelectedLang: getCurrentLanguage()
+  currentSelectedLang: getCurrentLanguage(),
 })
 const VSOPTIONS = {
   automaticLayout: true,
@@ -46,6 +47,30 @@ const WorkPanelFlex = computed(()=> {
     return {flex: "4"}
   }
 })
+/**
+ * Get all tabs info. In future embedding in apps, will also add support to load local third party language extensions
+ */
+const tabsInfo = computed(()=>{
+  let list = getBlockInfo()
+  console.log(list[0]["name"][getCurrentLanguage()])
+  let result = []
+  for (let i = 0; i < list.length; i++) {
+    result.push({
+      "id": list[i]["id"],
+      "name": list[i]["name"][getCurrentLanguage()],
+      "blocks": list[i]["blocks"]
+    })
+  }
+  return result
+})
+
+/**
+ * Get the event from the tab box. Change the blocks to the contents that belongs to the tab. (Handler)
+ * @param {String} tabID The received target tabID
+ */
+function onTabChangeHandler(tabID) {
+    interfaceData.value.blockTabActiveKey = tabID
+}
 </script>
 
 <template>
@@ -141,7 +166,7 @@ const WorkPanelFlex = computed(()=> {
     <div class="main-body">
       <div class="block-panel panel">
         <BlockSectionSelector/>
-        
+        <BlockPanel/>
       </div>
       <div class="work-panel panel" :style="WorkPanelFlex"></div>
       <div class="code-panel panel" v-if="interfaceControl.showCodePreview">
