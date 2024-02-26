@@ -1,0 +1,135 @@
+<script setup>
+import { message, notification } from 'ant-design-vue';
+import { ref } from 'vue';
+import draggableComponent from 'vuedraggable';
+
+/**
+ * Properties for the Block Element
+ * 
+ * `ID` - The general id for a block
+ * 
+ * `contentTemplate` - How the words will display on the block
+ * 
+ * `codeTemplate` - Tells the code generator how to generate using the parameters inside the content
+ */
+const props = defineProps({
+    "id": String,
+    "contentTemplate": String,
+    "codeTemplate": String
+})
+
+const patterns = {
+    paramter: /<([^>]+)>/,
+    index: /\[([0-9]+)\]/,
+    acceptTypes: /accept:\s*\{([^}]+)\}/
+}
+
+/**
+ * The Paramter Slots will store all the data of the parameters for easier code generation and content modification
+ */
+const paramSlots = ref({})
+const contents = ref([])
+
+function sendErrorLoadingNotification() {
+    notification.error({
+        message: "Error while loading blocks",
+        description: "We cannot instantiate a block due to wrong template syntax. Contact the module developer to solve or please temporarly disable that module."
+    })
+}
+
+function processBlockContent() {
+    // iterate through the content template and seperate elements
+    let contentSegment = ""
+    let slotSegment = ""
+    let isInSlot = false
+    // iterate to seperate content
+    for (let i = 0; i < props.contentTemplate.length; i++) {
+        if (props.contentTemplate.charAt(i) === "<") {
+            // register new state
+            isInSlot = true
+            slotSegment += "<"
+            // commit content segment
+            contents.value.push({
+                type: "content",
+                content: contentSegment
+            })
+            contentSegment = ""
+        }
+        else if (props.contentTemplate.charAt(i) === ">") {
+            // register new state
+            isInSlot = false
+            slotSegment += ">"
+            // commit param segment
+            contents.value.push({
+                type: "param",
+                content: slotSegment,
+                index: null,
+                acceptTypes: []
+            })
+            slotSegment = ""
+        }
+        else {
+            // normal append
+            isInSlot ? slotSegment += props.contentTemplate.charAt(i) : contentSegment += props.contentTemplate.charAt(i)
+        }
+    }
+    if (contentSegment !== "") {
+        contents.value.push({
+            type: "content",
+            content: contentSegment
+        })
+        contentSegment = ""
+    }
+    if (slotSegment !== "") {
+        contents.value.push({
+            type: "param",
+            content: slotSegment,
+            index: null,
+            acceptTypes: []
+        })
+        slotSegment = ""
+    }
+
+    // iterate to set param slot information
+    for (let i = 0; i < contents.value.length; i++) {
+        if (contents.value[i].type === "param") {
+            if (!contents.value[i].content.match(patterns.paramter)) {
+                sendErrorLoadingNotification()
+            }
+            // get the index of the param
+            if (contents.value[i].content.match(patterns.index)) {
+                for (const match of contents.value[i].content.matchAll(patterns.index)) {
+                    contents.value[i].index = match[1]
+                }
+            }
+            else {
+                sendErrorLoadingNotification()
+            }
+            // get the accept types for each
+            if (contents.value[i].content.match(patterns.acceptTypes)) {
+                for (const match of contents.value[i].content.matchAll(patterns.index)) {
+                    const accepts = match[1].split("&")
+                    contents.values[i].acceptTypes = accepts
+                }
+            }
+        }
+    }
+
+}
+</script>
+<template>
+    <div class="main-block">
+
+    </div>
+</template>
+<style scoped>
+.main-block {
+    margin: 10px;
+    padding: 7px;
+    border-radius: 7px;
+    background-color: rgba(0, 0, 0, 0.05);
+    flex-direction: row;
+    align-items: center;
+    height: fit-content;
+}
+</style>
