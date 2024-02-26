@@ -38,7 +38,7 @@ const interfaceData = ref({
         <BlockSelectableButton :content="btnContent"/>
         <template #overlay>
             <div class="dropdown-main-box">
-                <Menu v-model:selected-keys="interfaceData.selectedPage">
+                <Menu v-model:selected-keys="interfaceData.selectedPage" mode="inline" class="inbox-menu">
                     <MenuItem v-for="i in selectableValues" :key="i.value">{{ i.name }}</MenuItem>
                 </Menu>
             </div>
@@ -58,5 +58,9 @@ const interfaceData = ref({
     display: flex;
     flex-direction: row;
 
+}
+
+.inbox-menu {
+    box-shadow: none !important;
 }
 </style>
