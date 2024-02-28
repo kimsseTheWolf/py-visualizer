@@ -21,7 +21,7 @@ const props = defineProps({
 const patterns = {
     paramter: /<([^>]+)>/,
     index: /\[([0-9]+)\]/g,
-    acceptTypes: /accept:\s*\{([^}]+)\}/
+    acceptTypes: /accept:\s*\{([^}]+)\}/g
 }
 
 /**
@@ -106,11 +106,21 @@ function processBlockContent() {
                 sendErrorLoadingNotification()
             }
             // get the accept types for each
+            // console.log("Does match accept types: ", contents.value[i].content.match(patterns.acceptTypes))
             if (contents.value[i].content.match(patterns.acceptTypes)) {
-                for (const match of contents.value[i].content.matchAll(patterns.index)) {
+                for (const match of contents.value[i].content.matchAll(patterns.acceptTypes)) {
                     const accepts = match[1].split("&")
+                    // console.log("Value of accpets:", match[1])
                     contents.value[i].acceptTypes = accepts
+                    // append for the situation if no & appears
+                    if (accepts.length === 0) {
+                        contents.value[i].acceptTypes.push(match[1])
+                    }
                 }
+            }
+            else {
+                console.log("program says it does not match accpet types")
+                sendErrorLoadingNotification()
             }
 
             // append to the slot
@@ -123,7 +133,7 @@ function processBlockContent() {
 }
 
 processBlockContent()
-console.log("The block has been created")
+// console.log("The block has been created")
 </script>
 <template>
     <div class="main-block">
