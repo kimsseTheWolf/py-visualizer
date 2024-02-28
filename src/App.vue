@@ -30,7 +30,7 @@ const interfaceControl = ref({
   showLanguageModal: false,
 })
 const interfaceData = ref({
-  blockTabActiveKey: "io",
+  blockTabActiveKey: "basic.io",
   currentSelectedLang: getCurrentLanguage(),
 })
 const VSOPTIONS = {
@@ -70,6 +70,7 @@ const tabsInfo = computed(()=>{
  */
 function onTabChangeHandler(tabID) {
     interfaceData.value.blockTabActiveKey = tabID
+    console.log("Tab changed")
 }
 </script>
 
@@ -165,8 +166,8 @@ function onTabChangeHandler(tabID) {
 
     <div class="main-body">
       <div class="block-panel panel">
-        <BlockSectionSelector/>
-        <BlockPanel/>
+        <BlockSectionSelector @on-tab-change="onTabChangeHandler"/>
+        <BlockPanel :currentid="interfaceData.blockTabActiveKey"/>
       </div>
       <div class="work-panel panel" :style="WorkPanelFlex"></div>
       <div class="code-panel panel" v-if="interfaceControl.showCodePreview">

@@ -10,7 +10,7 @@ const emits = defineEmits(["onTabChange"])
 
 const interfaceControl = ref({
     expanding: false,
-    currActiveID: "io",
+    currActiveID: "basic.io",
     currActiveTitle: getBlockInfo()[0]["name"][getCurrentLanguage()]
 })
 

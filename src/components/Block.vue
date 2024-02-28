@@ -20,7 +20,7 @@ const props = defineProps({
 
 const patterns = {
     paramter: /<([^>]+)>/,
-    index: /\[([0-9]+)\]/,
+    index: /\[([0-9]+)\]/g,
     acceptTypes: /accept:\s*\{([^}]+)\}/
 }
 
@@ -109,27 +109,43 @@ function processBlockContent() {
             if (contents.value[i].content.match(patterns.acceptTypes)) {
                 for (const match of contents.value[i].content.matchAll(patterns.index)) {
                     const accepts = match[1].split("&")
-                    contents.values[i].acceptTypes = accepts
+                    contents.value[i].acceptTypes = accepts
                 }
             }
+
+            // append to the slot
+            paramSlots.value[contents.value[i].index] = null
         }
     }
 
+    console.log("Process finished! Result: ", contents.value)
+
 }
+
+processBlockContent()
+console.log("The block has been created")
 </script>
 <template>
     <div class="main-block">
-
+        This is a block
     </div>
 </template>
 <style scoped>
 .main-block {
     margin: 10px;
+    margin-top: 0;
+    margin-bottom: 7px;
     padding: 7px;
     border-radius: 7px;
     background-color: rgba(0, 0, 0, 0.05);
     flex-direction: row;
     align-items: center;
     height: fit-content;
+    font-size: small;
+    user-select: none;
+    transition: all 0.1s;
+}
+.main-block:hover {
+    background-color: rgba(0, 0, 0, 0.1);
 }
 </style>
