@@ -18,6 +18,7 @@ import { ref, computed } from 'vue';
 import MenuBtn from "./components/MenuBtn.vue"
 import BlockSectionSelector from "./components/BlockSectionSelector.vue";
 import BlockPanel from "./components/BlockPanel.vue";
+import CommandPanel from "./components/CommandPanel.vue";
 import {initializeLanguage, languages, getCurrentLanguage, setCurrentLanguage} from "./js/languageUtil"
 import {getBlockInfo} from "./js/blockLoaderUtil"
 
@@ -169,7 +170,9 @@ function onTabChangeHandler(tabID) {
         <BlockSectionSelector @on-tab-change="onTabChangeHandler"/>
         <BlockPanel :currentid="interfaceData.blockTabActiveKey"/>
       </div>
-      <div class="work-panel panel" :style="WorkPanelFlex"></div>
+      <div class="work-panel panel" :style="WorkPanelFlex">
+        <CommandPanel/>
+      </div>
       <div class="code-panel panel" v-if="interfaceControl.showCodePreview">
         <vue-monaco-editor
         theme="vs-light"

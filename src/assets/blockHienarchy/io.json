@@ -5,7 +5,8 @@
         "zh-CN": "输入，输出控制"
     },
     "blocks": {
-        "print": {
+        "basic.io.print": {
+            "id": "basic.io.print",
             "visualize": {
                 "default": "Print <[0]{accept:{var&value}}> to screen",
                 "en-US": "Print <[0]{accept:{var&value}}> to screen",
@@ -13,7 +14,8 @@
             },
             "code": "print(<0>)"
         },
-        "input": {
+        "basic.io.input": {
+            "id": "basic.io.input",
             "visualize": {
                 "default": "Get user input and set the value to <[0]{accept:{var}}>",
                 "en-US": "Get user input and set the value to <[0]{accept:{var}}>",
@@ -21,7 +23,8 @@
             },
             "code": "<0> = input()"
         },
-        "inputWithPrompt": {
+        "basic.io.inputWithPrompt": {
+            "id": "basic.io.inputWithPrompt",
             "visualize": {
                 "default": "Prompt: <[0]{accept:{var&value}}> to the user, and set the value to <[1]{accept:{var}}>",
                 "en-US": "Prompt: <[0]{accept:{var&value}}> to the user, and set the value to <[1]{accept:{var}}>",

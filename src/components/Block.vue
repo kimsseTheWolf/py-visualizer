@@ -2,6 +2,7 @@
 import { message, notification } from 'ant-design-vue';
 import { ref } from 'vue';
 import draggableComponent from 'vuedraggable';
+import BlockSelectableElement from './Selectable/BlockSelectableElement.vue';
 
 /**
  * Properties for the Block Element
@@ -137,7 +138,10 @@ processBlockContent()
 </script>
 <template>
     <div class="main-block">
-        This is a block
+        <template v-for="i in contents">
+            <div v-if="i.type === 'content'">{{ i.content }}</div>
+            <BlockSelectableElement v-if="i.type === 'param'" :accept-type="i.acceptTypes" :index="i.index"></BlockSelectableElement>
+        </template>
     </div>
 </template>
 <style scoped>
@@ -148,8 +152,6 @@ processBlockContent()
     padding: 7px;
     border-radius: 7px;
     background-color: rgba(0, 0, 0, 0.05);
-    flex-direction: row;
-    align-items: center;
     height: fit-content;
     font-size: small;
     user-select: none;

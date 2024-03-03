@@ -2,6 +2,7 @@
 import {getCurrentLanguage} from "../js/languageUtil"
 import {getBlockInfo} from "../js/blockLoaderUtil"
 import {ref, computed} from "vue"
+import draggable from "vuedraggable"
 import BlockSelectableElement from "./Selectable/BlockSelectableElement.vue";
 import Block from "./Block.vue";
 
@@ -9,6 +10,9 @@ const props = defineProps(["currentid"])
 
 const blocks = ref([])
 
+/**
+ * The full blocks definition object. Mainly for rendering the list
+ */
 const currentBlocks = computed(()=>{
     blocks.value = getBlockInfo()
     console.log(blocks.value)
@@ -21,13 +25,22 @@ const currentBlocks = computed(()=>{
         }
     }
     console.log("Nothing found!")
+    return []
 })
 
 console.log("Properties: ", props["currentid"])
 
 </script>
 <template>
-    <Block v-for="i in currentBlocks['blocks']" :id="i['code']" :content-template="i['visualize'][getCurrentLanguage()]" :code-template="i['code']"></Block>
+    <draggable
+    :list="Object.keys(currentBlocks['blocks'])"
+    :group="{name: 'blocks', pull: 'clone', put: false}"
+    item-key="id">
+        <template #item="{ element }">
+            <Block :id="element" :content-template="currentBlocks['blocks'][element]['visualize'][getCurrentLanguage()]" :code-template="currentBlocks['blocks'][element]['code']"></Block>
+        </template>
+    </draggable>
+    <!-- <Block v-for="i in currentBlocks['blocks']" :id="i['code']" :content-template="i['visualize'][getCurrentLanguage()]" :code-template="i['code']"></Block> -->
 </template>
 <style scoped>
 .temp {
