@@ -34,9 +34,6 @@ function printOnChangeMessage() {
 </script>
 <template>
     <div class="main-box">
-        <div>
-            {{ currentBlocks }}
-        </div>
         <draggable
         :list="currentBlocks"
         group="blocks"

@@ -161,7 +161,7 @@ function regenerateTemplate() {
     <div class="main-block" :id="props.id">
         <div>{{ regenerateTemplate() }}</div>
         <template v-for="i in contents">
-            <div v-if="i.type === 'content'">{{ i.content }}</div>
+            <div v-if="i.type === 'content'" class="inner-element">{{ i.content }}</div>
             <BlockSelectableElement v-if="i.type === 'param'" :accept-type="i.acceptTypes" :index="i.index"></BlockSelectableElement>
         </template>
     </div>
@@ -180,6 +180,9 @@ function regenerateTemplate() {
     transition: all 0.1s;
 }
 .main-block:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.075);
+}
+.inner-element {
+    display: inline-block;
 }
 </style>

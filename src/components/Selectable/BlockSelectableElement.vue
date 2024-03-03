@@ -47,8 +47,8 @@ const interfaceData = ref({
 </template>
 <style scoped>
 .dropdown-main-box {
-    width: 40vh;
-    height: 25vh;
+    width: 50vh;
+    height: 30vh;
     background-color: white;
     border-style: solid;
     border-width: 1px;

@@ -1,6 +1,6 @@
 <script setup>
 import draggable from "vuedraggable"
-import { Dropdown, Menu, MenuItem, MenuDivider, Button, Input, Tabs, TabPane, Modal, ButtonGroup, Select, SelectOption } from 'ant-design-vue';
+import { Dropdown, Menu, MenuItem, MenuDivider, Button, Input, Tabs, TabPane, Modal, ButtonGroup, Select, SelectOption, message } from 'ant-design-vue';
 import {
   UploadOutlined, 
   SaveOutlined, 
@@ -72,6 +72,11 @@ const tabsInfo = computed(()=>{
 function onTabChangeHandler(tabID) {
     interfaceData.value.blockTabActiveKey = tabID
     console.log("Tab changed")
+}
+
+function handleSetLanguage() {
+  setCurrentLanguage(interfaceData.value.currentSelectedLang)
+  message.success("Success! In order to take effect, save your work and refresh this page")
 }
 </script>
 
@@ -187,12 +192,14 @@ function onTabChangeHandler(tabID) {
   <Modal title="Choose a language" v-model:visible="interfaceControl.showLanguageModal">
     <div style="display: flex; flex-direction: column;">
       <div>Choose an desired language from the dropbox below, you need to refresh your page to apply changes:</div>
-      <Select v-model:value="interfaceData.currentSelectedLang">
+      <Select v-model:value="interfaceData.currentSelectedLang" style="margin-top: 5px;">
         <SelectOption v-for="i in languages" :value="i.value">{{ i.name }}</SelectOption>
       </Select>
+      <div style="margin-top: 5px;">We also welcome people from the community to contribute on different language translations in order to bring this tool to everyone around the world.</div>
+      <div style="margin-top: 5px;">Please visit out GitHub Repository to have more information on translation contribution.</div>
     </div>
     <template #footer>
-      <Button type="primary" @click="setCurrentLanguage(interfaceData.currentSelectedLang)">Apply</Button>
+      <Button type="primary" @click="handleSetLanguage">Apply</Button>
       <Button @click="interfaceControl.showLanguageModal = !interfaceControl.showLanguageModal">Cancle</Button>
     </template>
   </Modal>
