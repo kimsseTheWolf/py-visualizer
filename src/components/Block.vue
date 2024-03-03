@@ -150,7 +150,7 @@ console.log("Another check for template: " + props.contentTemplate)
 /**
  * To avoid not up-to-date template data, rerender if the two checkpoints were different
  */
-function printTemplate() {
+function regenerateTemplate() {
     if (temp !== props.contentTemplate) {
         // go through again to update information
         processBlockContent()
@@ -159,7 +159,7 @@ function printTemplate() {
 </script>
 <template>
     <div class="main-block" :id="props.id">
-        <div>{{ printTemplate() }}</div>
+        <div>{{ regenerateTemplate() }}</div>
         <template v-for="i in contents">
             <div v-if="i.type === 'content'">{{ i.content }}</div>
             <BlockSelectableElement v-if="i.type === 'param'" :accept-type="i.acceptTypes" :index="i.index"></BlockSelectableElement>

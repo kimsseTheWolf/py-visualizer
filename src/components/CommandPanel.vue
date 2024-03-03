@@ -45,7 +45,6 @@ function printOnChangeMessage() {
         :move="()=>true">
             <template #item="{ element, index }">
                 <div>
-                    <div>{{ element + " - " + index }}</div>
                     <Block :id="element + '-' + uuidv4()" :content-template="fullBlockInfoList[element]['visualize'][getCurrentLanguage()]" :code-template="fullBlockInfoList[element]['code']"></Block>
                 </div>
             </template>
