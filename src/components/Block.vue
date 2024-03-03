@@ -31,6 +31,11 @@ const patterns = {
 const paramSlots = ref({})
 const contents = ref([])
 
+/**
+ * The variable to store the first time check template data for rerendering check
+ */
+let temp = ""
+
 function sendErrorLoadingNotification() {
     notification.error({
         message: "Error while loading blocks",
@@ -39,6 +44,12 @@ function sendErrorLoadingNotification() {
 }
 
 function processBlockContent() {
+    // reset
+    paramSlots.value = []
+    contents.value = []
+    // Problem here
+    console.log("Going through contentTemplate: " + props.contentTemplate)
+    temp = props.contentTemplate
     // iterate through the content template and seperate elements
     let contentSegment = ""
     let slotSegment = ""
@@ -134,10 +145,21 @@ function processBlockContent() {
 }
 
 processBlockContent()
-// console.log("The block has been created")
+console.log("Another check for template: " + props.contentTemplate)
+
+/**
+ * To avoid not up-to-date template data, rerender if the two checkpoints were different
+ */
+function printTemplate() {
+    if (temp !== props.contentTemplate) {
+        // go through again to update information
+        processBlockContent()
+    }
+}
 </script>
 <template>
-    <div class="main-block">
+    <div class="main-block" :id="props.id">
+        <div>{{ printTemplate() }}</div>
         <template v-for="i in contents">
             <div v-if="i.type === 'content'">{{ i.content }}</div>
             <BlockSelectableElement v-if="i.type === 'param'" :accept-type="i.acceptTypes" :index="i.index"></BlockSelectableElement>

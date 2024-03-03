@@ -1,6 +1,7 @@
 <script setup>
 import draggable from "vuedraggable"
 import {ref, computed} from "vue"
+import {v4 as uuidv4} from "uuid"
 import {getCurrentLanguage} from "../js/languageUtil"
 import {getBlockInfo} from "../js/blockLoaderUtil"
 import Block from "./Block.vue"
@@ -23,6 +24,13 @@ const fullBlockInfoList = computed(()=>{
     return fullBlockInfo
 })
 
+function printOnChangeMessage() {
+    console.log("The full block list sequence: ")
+    console.log(currentBlocks.value)
+    console.log("The full block info: ")
+    console.log(fullBlockInfoList.value)
+}
+
 </script>
 <template>
     <div class="main-box">
@@ -32,16 +40,14 @@ const fullBlockInfoList = computed(()=>{
         <draggable
         :list="currentBlocks"
         group="blocks"
-        item-key="id">
-            <template #item="{ element }">
-                <Dropdown :trigger="['contextmenu']">
-                    <template #overlay>
-                        <Menu>
-                            <MenuItem>Delete</MenuItem>
-                        </Menu>
-                    </template>
-                    <Block :id="element" :content-template="fullBlockInfoList[element]['visualize'][getCurrentLanguage()]" :code-template="fullBlockInfoList[element]['code']"></Block>
-                </Dropdown>
+        item-key="id"
+        @change="printOnChangeMessage"
+        :move="()=>true">
+            <template #item="{ element, index }">
+                <div>
+                    <div>{{ element + " - " + index }}</div>
+                    <Block :id="element + '-' + uuidv4()" :content-template="fullBlockInfoList[element]['visualize'][getCurrentLanguage()]" :code-template="fullBlockInfoList[element]['code']"></Block>
+                </div>
             </template>
         </draggable>
     </div>
