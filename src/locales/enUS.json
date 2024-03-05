@@ -1,0 +1,36 @@
+{
+    "toolBar": {
+        "defaultNewFileName": "New File",
+        "changeNameButton": "Change",
+        "menu": {
+            "file": {
+                "title": "File",
+                "upload": "Upload from computer",
+                "save": "Save",
+                "exportMetacode": "Export as Metacode File",
+                "exportPython": "Export as Python File"
+            },
+            "edit": {
+                "title": "Edit",
+                "copy": "Copy",
+                "paste": "Paste",
+                "languages": "Languages"
+            },
+            "views": {
+                "title": "Views",
+                "codePreview": "Toggle Code Preview"
+            },
+            "help": {
+                "title": "Help",
+                "about": "About",
+                "github": "GitHub"
+            }
+        },
+        "languageSelector": {
+            "title": "Choose a Language",
+            "direction": "Choose an desired language from the dropbox below, you need to refresh your page to apply changes:",
+            "community1": "We also welcome people from the community to contribute on different language translations in order to bring this tool to everyone around the world.",
+            "community2": "Please visit out GitHub Repository to have more information on translation contribution."
+        }
+    }
+}

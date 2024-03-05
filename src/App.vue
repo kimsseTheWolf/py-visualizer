@@ -21,8 +21,11 @@ import BlockPanel from "./components/BlockPanel.vue";
 import CommandPanel from "./components/CommandPanel.vue";
 import {initializeLanguage, languages, getCurrentLanguage, setCurrentLanguage} from "./js/languageUtil"
 import {getBlockInfo} from "./js/blockLoaderUtil"
+import { useI18n } from "vue-i18n";
 
 initializeLanguage()
+
+const {t} = useI18n()
 
 const fileName = ref("")
 const interfaceControl = ref({
@@ -87,81 +90,81 @@ function handleSetLanguage() {
       <div class="column item">
         <div class="row">
           <div class="file-name item" style="margin-left: 5px;">
-            <div v-if="!interfaceControl.showFileNameInput">{{ fileName === "" ? "New File" : fileName }}</div>
+            <div v-if="!interfaceControl.showFileNameInput">{{ fileName === "" ? t('toolBar.defaultNewFileName') : fileName }}</div>
             <Input v-if="interfaceControl.showFileNameInput" placeholder="New File Name" v-model:value="fileName"/>
           </div>
           <Button type="primary" size="small" @click="interfaceControl.showFileNameInput = !interfaceControl.showFileNameInput">
             <EditOutlined/>
-            Change
+            {{ t('toolBar.changeNameButton') }}
           </Button>
         </div>
         <div class="row" style="margin-bottom: 0;">
           <Dropdown>
-            <MenuBtn>File</MenuBtn>
+            <MenuBtn>{{ t('toolBar.menu.file.title') }}</MenuBtn>
             <template #overlay>
               <Menu>
                 <MenuItem key="1">
                   <UploadOutlined/>
-                  Upload from computer
+                  {{ t('toolBar.menu.file.upload') }}
                 </MenuItem>
                 <MenuItem key="2">
                   <SaveOutlined/>
-                  Save
+                  {{ t('toolBar.menu.file.save') }}
                 </MenuItem>
                 <MenuItem key="3">
                   <ExportOutlined/>
-                  Export as Metacode file
+                  {{ t('toolBar.menu.file.exportMetacode') }}
                 </MenuItem>
                 <MenuItem key="4">
                   <ExportOutlined/>
-                  Export as Python file
+                  {{ t('toolBar.menu.file.exportPython') }}
                 </MenuItem>
               </Menu>
             </template>
           </Dropdown>
           <Dropdown>
-            <MenuBtn>Edit</MenuBtn>
+            <MenuBtn>{{ t('toolBar.menu.edit.title') }}</MenuBtn>
             <template #overlay>
               <Menu>
                 <MenuItem key="1">
                   <CopyOutlined/>
-                  Copy
+                  {{ t('toolBar.menu.edit.copy') }}
                 </MenuItem>
                 <MenuItem key="2">
                   <PaperClipOutlined/>
-                  Paste
+                  {{ t('toolBar.menu.edit.paste') }}
                 </MenuItem>
                 <MenuDivider/>
                 <MenuItem key="3" @click="interfaceControl.showLanguageModal = true">
                   <GlobalOutlined/>
-                  Languages
+                  {{ t('toolBar.menu.edit.languages') }}
                 </MenuItem>
               </Menu>
             </template>
           </Dropdown>
           <Dropdown>
-            <MenuBtn>Views</MenuBtn>
+            <MenuBtn>{{ t('toolBar.menu.views.title') }}</MenuBtn>
             <template #overlay>
               <Menu>
                 <MenuItem key="1" @click="interfaceControl.showCodePreview = !interfaceControl.showCodePreview">
                   <EyeOutlined v-if="!interfaceControl.showCodePreview"/>
                   <EyeInvisibleOutlined v-if="interfaceControl.showCodePreview"/>
-                  Toggle Code Preview
+                  {{ t('toolBar.menu.views.codePreview') }}
                 </MenuItem>
               </Menu>
             </template>
           </Dropdown>
           <Dropdown>
-            <MenuBtn>Help</MenuBtn>
+            <MenuBtn>{{ t('toolBar.menu.help.title') }}</MenuBtn>
             <template #overlay>
               <Menu>
                 <MenuItem key="1">
                   <InfoCircleOutlined/>
-                  About
+                  {{ t('toolBar.menu.help.about') }}
                 </MenuItem>
                 <MenuItem key="2">
                   <GithubOutlined/>
-                  GitHub
+                  {{ t('toolBar.menu.help.github') }}
                 </MenuItem>
               </Menu>
             </template>
@@ -189,14 +192,14 @@ function handleSetLanguage() {
   </div>
 
 
-  <Modal title="Choose a language" v-model:visible="interfaceControl.showLanguageModal">
+  <Modal :title="t('toolBar.languageSelector.title')" v-model:visible="interfaceControl.showLanguageModal">
     <div style="display: flex; flex-direction: column;">
-      <div>Choose an desired language from the dropbox below, you need to refresh your page to apply changes:</div>
+      <div>{{ t('toolBar.languageSelector.direction') }}</div>
       <Select v-model:value="interfaceData.currentSelectedLang" style="margin-top: 5px;">
         <SelectOption v-for="i in languages" :value="i.value">{{ i.name }}</SelectOption>
       </Select>
-      <div style="margin-top: 5px;">We also welcome people from the community to contribute on different language translations in order to bring this tool to everyone around the world.</div>
-      <div style="margin-top: 5px;">Please visit out GitHub Repository to have more information on translation contribution.</div>
+      <div style="margin-top: 5px;">{{ t('toolBar.languageSelector.community1') }}</div>
+      <div style="margin-top: 5px;">{{ t('toolBar.languageSelector.community2') }}</div>
     </div>
     <template #footer>
       <Button type="primary" @click="handleSetLanguage">Apply</Button>

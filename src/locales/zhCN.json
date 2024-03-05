@@ -1,0 +1,36 @@
+{
+    "toolBar": {
+        "defaultNewFileName": "新文件",
+        "changeNameButton": "修改",
+        "menu": {
+            "file": {
+                "title": "文件",
+                "upload": "从本地上传",
+                "save": "保存",
+                "exportMetacode": "以Metacode格式导出",
+                "exportPython": "以Python文件导出"
+            },
+            "edit": {
+                "title": "编辑",
+                "copy": "复制",
+                "paste": "粘贴",
+                "languages": "语言"
+            },
+            "views": {
+                "title": "视图",
+                "codePreview": "切换代码预览窗口可见性"
+            },
+            "help": {
+                "title": "帮助",
+                "about": "关于",
+                "github": "GitHub"
+            }
+        },
+        "languageSelector": {
+            "title": "选择一个语言",
+            "direction": "从下面的下拉菜单中选择系统显示语言，您需要刷新页面来应用设置",
+            "community1": "我们同时欢迎社区用户来帮助我们一起完善多语言支持，这样此工具就可以给全球的所有用户使用！",
+            "community2": "请前往我们的GitHub仓库来了解更多有关多语言支持。"
+        }
+    }
+}
