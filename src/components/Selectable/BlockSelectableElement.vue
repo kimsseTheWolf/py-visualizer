@@ -41,6 +41,13 @@ const interfaceData = ref({
                 <Menu v-model:selected-keys="interfaceData.selectedPage" mode="inline" class="inbox-menu">
                     <MenuItem v-for="i in selectableValues" :key="i.value">{{ i.name }}</MenuItem>
                 </Menu>
+                <div class="main-content-box">
+                    <div v-if="interfaceData.selectedPage[0] === 'value'" class="content-box"></div>
+                    <div v-else-if="interfaceData.selectedPage[0] === 'var'" class="content-box"></div>
+                    <div v-else class="content-box full-center">
+                        Choose a data type from the menu on the left
+                    </div>
+                </div>
             </div>
         </template>
     </Dropdown>
@@ -62,5 +69,24 @@ const interfaceData = ref({
 
 .inbox-menu {
     box-shadow: none !important;
+}
+
+.main-content-box {
+    display: flex;
+    flex-direction: row;
+    flex: auto;
+}
+
+.content-box {
+    display: flex;
+    flex-direction: column;
+    flex: auto;
+    margin-left: 5px;
+}
+
+.full-center {
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 </style>

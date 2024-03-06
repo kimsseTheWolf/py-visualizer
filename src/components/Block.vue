@@ -141,6 +141,7 @@ function processBlockContent() {
     }
 
     console.log("Process finished! Result: ", contents.value)
+    console.log("Param Slots: ", paramSlots.value)
 
 }
 
