@@ -4,6 +4,7 @@ import {getBlockInfo} from "../js/blockLoaderUtil"
 import {ref, computed} from "vue"
 import draggable from "vuedraggable"
 import BlockSelectableElement from "./Selectable/BlockSelectableElement.vue";
+import variableManager from "./VariableManager.vue"; // basic.var
 import Block from "./Block.vue";
 
 const props = defineProps(["currentid"])
@@ -32,6 +33,7 @@ console.log("Properties: ", props["currentid"])
 
 </script>
 <template>
+    <variableManager v-if="props['currentid'] === 'basic.var'"></variableManager>
     <draggable
     :list="Object.keys(currentBlocks['blocks'])"
     :group="{name: 'blocks', pull: 'clone', put: false}"
