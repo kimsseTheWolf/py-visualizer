@@ -1,9 +1,10 @@
 <script setup>
 import { Flex, message } from 'ant-design-vue';
 import { Button, Empty, Input, Modal, Form, FormItem, Select, SelectOption, InputNumber, Tag } from 'ant-design-vue';
-import { ref, computed, reactive } from 'vue';
+import { ref, computed, reactive, toRefs, toRef } from 'vue';
 import {PlusCircleOutlined, ReloadOutlined} from "@ant-design/icons-vue"
 import { getAll, dataTypes, createNewVar } from "../js/variableUtil"
+import VariableTag from "./VariableTag.vue"
 
 const vars = ref([])
 vars.value = getAll()
@@ -28,6 +29,12 @@ const newVarValue = reactive({
     string: "",
     boolean: false
 })
+
+const colors= {
+    Number: "blue",
+    String: "orange",
+    Bool: "green"
+}
 
 function createNewVariable() {
     // create new var
@@ -54,8 +61,8 @@ function createNewVariable() {
     }
 
     // refresh the list
-    // vars.value.push(result)
-    // console.log(vars.value)
+    vars.value = getAll()
+    console.log(vars.value)
 
     // clear the info and values
     newVarInfo.name = ""
@@ -63,6 +70,9 @@ function createNewVariable() {
     newVarValue.boolean = false
     newVarValue.number = 0
     newVarValue.string = ""
+
+    // notify the user the process is finished
+    message.success("创建成功")
 }
 
 </script>
@@ -84,7 +94,7 @@ function createNewVariable() {
                 </Empty>
             </Flex>
             <Flex :vertical="false" gap="small" wrap="wrap">
-                <Tag v-for="i in vars">{{i.key}}</Tag>
+                <Tag v-for="i in vars" :color="colors[i.type]" style="font-size: 15px; padding: 5px;">{{i.key}}</Tag>
             </Flex>
         </Flex>
     </div>

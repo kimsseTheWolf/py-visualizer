@@ -115,7 +115,7 @@ export function getValue(key) {
 }
 
 export function getAll() {
-    return varPool
+    return [...varPool]
 }
 
 // TODO: delete
