@@ -94,7 +94,7 @@ function createNewVariable() {
                 </Empty>
             </Flex>
             <Flex :vertical="false" gap="small" wrap="wrap">
-                <Tag v-for="i in vars" :color="colors[i.type]" style="font-size: 15px; padding: 5px;">{{i.key}}</Tag>
+                <VariableTag v-for="i in vars" :var-props="i"/>
             </Flex>
         </Flex>
     </div>
