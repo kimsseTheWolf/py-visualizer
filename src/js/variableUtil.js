@@ -48,7 +48,7 @@ function generateVarID() {
     let targetID = uuidv4()
 
     // replace all "-" to "_"
-    targetID.replace(/-/g, "_")
+    targetID = targetID.replace(/-/g, "_")
     return "var_id_" + targetID
 }
 
@@ -59,14 +59,16 @@ export function createNewVar(key, type, value=null) {
     }
 
     // create a new variable
-    let newVar = varElement
-    newVar.id = generateVarID()
-    newVar.key = key
-    newVar.type = type
-    newVar.value = value
+    let newVar = {
+        id: generateVarID(),
+        key: key,
+        type: type,
+        value: value
+    }
 
     // append
     varPool.push(newVar)
+    return newVar
 }
 
 // TODO: modify

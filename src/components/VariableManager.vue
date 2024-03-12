@@ -1,11 +1,20 @@
 <script setup>
-import { Flex } from 'ant-design-vue';
-import { Button, Empty, Input, Modal, Form, FormItem, Select, SelectOption, InputNumber } from 'ant-design-vue';
+import { Flex, message } from 'ant-design-vue';
+import { Button, Empty, Input, Modal, Form, FormItem, Select, SelectOption, InputNumber, Tag } from 'ant-design-vue';
 import { ref, computed, reactive } from 'vue';
-import {PlusCircleOutlined} from "@ant-design/icons-vue"
-import { getAll, dataTypes } from "../js/variableUtil"
+import {PlusCircleOutlined, ReloadOutlined} from "@ant-design/icons-vue"
+import { getAll, dataTypes, createNewVar } from "../js/variableUtil"
 
-const vars = ref(getAll())
+const vars = ref([])
+vars.value = getAll()
+const shouldEnableCreateBtn = computed(()=>{
+    if (newVarInfo.name === "" || newVarInfo.type === "") {
+        return false
+    }
+    else {
+        return true
+    }
+})
 const interfaceControl = ref({
     showCreateVarModal: false
 })
@@ -20,6 +29,42 @@ const newVarValue = reactive({
     boolean: false
 })
 
+function createNewVariable() {
+    // create new var
+    const key = newVarInfo.name
+    const type = newVarInfo.type
+    let value = undefined
+    if (type === dataTypes.string) {
+        value = newVarValue.string
+    }
+    else if (type === dataTypes.number) {
+        value = newVarValue.number
+    }
+    else if (type === dataTypes.boolean) {
+        value = newVarValue.boolean
+    }
+    else {
+        message.error("创建变量出现错误：未知的数据类型")
+        return
+    }
+    const result = createNewVar(key, type, value)
+    if (!result) {
+        message.error("创建失败")
+        return
+    }
+
+    // refresh the list
+    // vars.value.push(result)
+    // console.log(vars.value)
+
+    // clear the info and values
+    newVarInfo.name = ""
+    newVarInfo.type = ""
+    newVarValue.boolean = false
+    newVarValue.number = 0
+    newVarValue.string = ""
+}
+
 </script>
 <template>
     <div class="main-block">
@@ -31,7 +76,7 @@ const newVarValue = reactive({
                 </Button>
                 <Input placeholder="搜索变量"></Input>
             </Flex>
-            <Flex v-if="vars.length === 0" justify="center" align="center">
+            <Flex v-if="vars.length == 0" justify="center" align="center">
                 <Empty>
                     <template #description>
                         还没有创建任何变量，点击左上角添加
@@ -39,35 +84,36 @@ const newVarValue = reactive({
                 </Empty>
             </Flex>
             <Flex :vertical="false" gap="small" wrap="wrap">
-                <!-- Variable tags here -->
+                <Tag v-for="i in vars">{{i.key}}</Tag>
             </Flex>
         </Flex>
     </div>
     <Modal v-model:open="interfaceControl.showCreateVarModal" title="创建新变量">
-        <Flex :vertical="true" gap="small">
-            <Form :model="newVarInfo" layout="vertical">
+        <Form :model="newVarInfo" layout="vertical">
                 <FormItem label="变量名称" name="name" :rules="[{required: true, message: '请输入变量名称！'}]">
                     <Input v-model:value="newVarInfo.name" placeholder="变量名"></Input>
                 </FormItem>
                 <FormItem label="类型" name="type" :rules="[{required: true, message: '请选择类型！'}]">
                     <Select v-model:value="newVarInfo.type">
-                        <SelectOption v-for="i in Object.keys(dataTypes)" :value="i">{{ dataTypes[i] }}</SelectOption>
+                        <SelectOption v-for="i in Object.keys(dataTypes)" :value="dataTypes[i]">{{ dataTypes[i] }}</SelectOption>
                     </Select>
                 </FormItem>
-                <FormItem v-if="newVarInfo.type === 'number'" label="初始值" name="name" :rules="[{required: false, message: '请指定初始值！'}]">
+                <FormItem v-if="newVarInfo.type === dataTypes.number" label="初始值" name="name" :rules="[{required: false, message: '请指定初始值！'}]">
                     <InputNumber v-model:value="newVarValue.number"></InputNumber>
                 </FormItem>
-                <FormItem v-if="newVarInfo.type === 'string'" label="初始值" name="name" :rules="[{required: false, message: '请指定初始值！'}]">
+                <FormItem v-if="newVarInfo.type === dataTypes.string" label="初始值" name="name" :rules="[{required: false, message: '请指定初始值！'}]">
                     <Input placeholder="字符串初始值" v-model:value="newVarValue.string"></Input>
                 </FormItem>
-                <FormItem v-if="newVarInfo.type === 'boolean'" label="初始值" name="name" :rules="[{required: false, message: '请指定初始值！'}]">
+                <FormItem v-if="newVarInfo.type === dataTypes.boolean" label="初始值" name="name" :rules="[{required: false, message: '请指定初始值！'}]">
                     <Select v-model:value="newVarValue.boolean">
                         <SelectOption :value="true">True</SelectOption>
                         <SelectOption :value="false">False</SelectOption>
                     </Select>
                 </FormItem>
+                <FormItem>
+                    <Button type="primary" :disabled="!shouldEnableCreateBtn" @click="createNewVariable()">创建</Button>
+                </FormItem>
             </Form>
-        </Flex>
         <template #footer>
             
         </template>
