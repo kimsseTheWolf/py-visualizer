@@ -3,7 +3,7 @@ import { Flex, message } from 'ant-design-vue';
 import { Button, Empty, Input, Modal, Form, FormItem, Select, SelectOption, InputNumber, Tag } from 'ant-design-vue';
 import { ref, computed, reactive, toRefs, toRef } from 'vue';
 import {PlusCircleOutlined, ReloadOutlined} from "@ant-design/icons-vue"
-import { getAll, dataTypes, createNewVar } from "../js/variableUtil"
+import { getAll, dataTypes, createNewVar, deleteVar } from "../js/variableUtil"
 import VariableTag from "./VariableTag.vue"
 
 const vars = ref([])
@@ -75,6 +75,13 @@ function createNewVariable() {
     message.success("创建成功")
 }
 
+function handleVarDelete(id) {
+    deleteVar(id)
+    // refresh the list
+    vars.value = getAll()
+    message.success("删除成功")
+}
+
 </script>
 <template>
     <div class="main-block">
@@ -94,7 +101,7 @@ function createNewVariable() {
                 </Empty>
             </Flex>
             <Flex :vertical="false" gap="small" wrap="wrap">
-                <VariableTag v-for="i in vars" :var-props="i"/>
+                <VariableTag v-for="i in vars" :var-props="i" @on-delete="handleVarDelete"/>
             </Flex>
         </Flex>
     </div>

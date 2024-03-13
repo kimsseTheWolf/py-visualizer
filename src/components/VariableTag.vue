@@ -4,6 +4,7 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { ref } from 'vue';
 
 const props = defineProps(["varProps"])
+const emits = defineEmits(["onDelete"])
 
 const colors= {
     Number: "blue",
@@ -29,6 +30,10 @@ function handleHoverChange(visible) {
 function handleClickChange(visible) {
     interfaceControl.value.showHoverPopover = false
     interfaceControl.value.showClickedPopover = visible
+}
+
+function handleDelete() {
+    emits("onDelete", props.varProps.id)
 }
 </script>
 <template>
@@ -68,7 +73,7 @@ function handleClickChange(visible) {
                     </List>
                     <Flex :vertical="false" gap="small">
                         <Button type="text"><EditOutlined/>修改</Button>
-                        <Button type="text" danger><DeleteOutlined/>删除</Button>
+                        <Button type="text" danger @click="handleDelete"><DeleteOutlined/>删除</Button>
                     </Flex>
                 </Flex>
             </template>

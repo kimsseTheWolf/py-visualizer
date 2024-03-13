@@ -5,6 +5,14 @@
         "zh-CN": "变量"
     },
     "blocks": {
-        
+        "basic.var.modify": {
+            "id": "basic.var.modify",
+            "visualize": {
+                "default": "Modify variable <[0]{accept:{var}}> to value <[1]{accept:{var&value}}>",
+                "en-US": "Modify variable <[0]{accept:{var}}> to value <[1]{accept:{var&value}}>",
+                "zh-CN": "将变量<[0]{accept:{var}}>修改为值：<[1]{accept:{var&value}}>"
+            },
+            "code": "<0> = <1>"
+        }
     }
 }
