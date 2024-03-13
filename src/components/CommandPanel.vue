@@ -31,6 +31,10 @@ function printOnChangeMessage() {
     console.log(fullBlockInfoList.value)
 }
 
+function handleDelete(index) {
+    currentBlocks.value.splice(index, 1)
+}
+
 </script>
 <template>
     <div class="main-box">
@@ -42,7 +46,7 @@ function printOnChangeMessage() {
         :move="()=>true">
             <template #item="{ element, index }">
                 <div>
-                    <Block :id="element + '-' + uuidv4()" :content-template="fullBlockInfoList[element]['visualize'][getCurrentLanguage()]" :code-template="fullBlockInfoList[element]['code']"></Block>
+                    <Block :id="element + '-' + uuidv4()" :content-template="fullBlockInfoList[element]['visualize'][getCurrentLanguage()]" :code-template="fullBlockInfoList[element]['code']" :is-in-command="true" @on-delete="handleDelete(index)"></Block>
                 </div>
             </template>
         </draggable>

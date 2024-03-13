@@ -1,5 +1,6 @@
 <script setup>
 import { message, notification } from 'ant-design-vue';
+import { MinusCircleOutlined } from "@ant-design/icons-vue"
 import { ref } from 'vue';
 import draggableComponent from 'vuedraggable';
 import BlockSelectableElement from './Selectable/BlockSelectableElement.vue';
@@ -16,8 +17,11 @@ import BlockSelectableElement from './Selectable/BlockSelectableElement.vue';
 const props = defineProps({
     "id": String,
     "contentTemplate": String,
-    "codeTemplate": String
+    "codeTemplate": String,
+    "isInCommand": Boolean
 })
+
+const emits = defineEmits(["onDelete"])
 
 const patterns = {
     paramter: /<([^>]+)>/,
@@ -157,14 +161,19 @@ function regenerateTemplate() {
         processBlockContent()
     }
 }
+
+function handleDelete() {
+    emits("onDelete")
+}
 </script>
 <template>
     <div class="main-block" :id="props.id">
         <div>{{ regenerateTemplate() }}</div>
         <template v-for="i in contents">
             <div v-if="i.type === 'content'" class="inner-element">{{ i.content }}</div>
-            <BlockSelectableElement v-if="i.type === 'param'" :accept-type="i.acceptTypes" :index="i.index"></BlockSelectableElement>
+            <BlockSelectableElement v-if="i.type === 'param'" :accept-type="i.acceptTypes" :index="i.index" :is-in-command="props.isInCommand"></BlockSelectableElement>
         </template>
+        <MinusCircleOutlined class="remove-icon-btn" v-if="props.isInCommand" @click="handleDelete"></MinusCircleOutlined>
     </div>
 </template>
 <style scoped>
@@ -185,5 +194,13 @@ function regenerateTemplate() {
 }
 .inner-element {
     display: inline-block;
+}
+
+.remove-icon-btn{
+    color: black;
+    cursor: pointer;
+}
+.remove-icon-btn:hover {
+    color: red;
 }
 </style>

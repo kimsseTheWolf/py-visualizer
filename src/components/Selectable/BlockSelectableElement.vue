@@ -5,7 +5,7 @@ import BlockSelectableButton from './BlockSelectableButton.vue';
 /**
  * Properties of the element. Index is to indicate which element it is, and acceptType is the value tells the element what things are accepted
  */
-const props = defineProps(["index", "acceptType"])
+const props = defineProps(["index", "acceptType", "isInCommand"])
 const btnContent = ref("")
 const selectableValues = computed(()=>{
     let result = []
@@ -34,7 +34,7 @@ const interfaceData = ref({
 
 </script>
 <template>
-    <Dropdown v-model:open="interfaceControl.openOverflow">
+    <Dropdown v-model:open="interfaceControl.openOverflow" v-if="props.isInCommand">
         <BlockSelectableButton :content="btnContent"/>
         <template #overlay>
             <div class="dropdown-main-box">
@@ -51,6 +51,7 @@ const interfaceData = ref({
             </div>
         </template>
     </Dropdown>
+    <BlockSelectableButton :content="btnContent" v-if="!props.isInCommand"/>
 </template>
 <style scoped>
 .dropdown-main-box {
