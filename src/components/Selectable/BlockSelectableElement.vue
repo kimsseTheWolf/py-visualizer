@@ -1,5 +1,5 @@
 <script setup>
-import { Dropdown, Menu, MenuItem, Flex, Popover } from 'ant-design-vue';
+import { Dropdown, Menu, MenuItem, Flex, Popover, Empty } from 'ant-design-vue';
 import {ref, computed} from "vue"
 import {getAll} from "../../js/variableUtil"
 import BlockSelectableButton from './BlockSelectableButton.vue';
@@ -8,6 +8,7 @@ import VariableTag from '../VariableTag.vue';
  * Properties of the element. Index is to indicate which element it is, and acceptType is the value tells the element what things are accepted
  */
 const props = defineProps(["index", "acceptType", "isInCommand"])
+const emits = defineEmits(["onValueChange"])
 const btnContent = ref("")
 const selectableValues = computed(()=>{
     let result = []
@@ -35,9 +36,22 @@ const interfaceData = ref({
 })
 const variables = ref(getAll())
 
+function handleValueOnChange(type, data) {
+    if (type === "var") {
+        btnContent.value = "(Variable) " + data.key
+    }
+    else if (type === "value") {
+        btnContent.value = "(Value) " + data
+    }
+    emits("onValueChange", {
+        type: type,
+        data: data
+    })
+}
+
 </script>
 <template>
-    <Popover v-if="props.isInCommand">
+    <Popover v-if="props.isInCommand" @open-change="variables = getAll()">
         <BlockSelectableButton :content="btnContent"/>
         <template #content>
             <div class="dropdown-main-box">
@@ -50,7 +64,8 @@ const variables = ref(getAll())
                     <div v-if="interfaceData.selectedPage[0] === 'value'" class="content-box"></div>
                     <div v-else-if="interfaceData.selectedPage[0] === 'var'" class="content-box">
                         <Flex :vertical="false" gap="small" wrap="wrap">
-                            <VariableTag v-for="i in variables" :var-props="i" :enable-on-click="true"></VariableTag>
+                            <VariableTag v-for="i in variables" :var-props="i" :enable-on-click="true" @click="handleValueOnChange('var', i)"></VariableTag>
+                            <div v-if="variables.length === 0">No variables right now. You could create one in the variable section.</div>
                         </Flex>
                     </div>
                     <div v-else class="content-box full-center">
