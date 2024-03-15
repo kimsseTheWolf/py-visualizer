@@ -1,6 +1,6 @@
 <script setup>
 import {getCurrentLanguage} from "../js/languageUtil"
-import {getBlockInfo} from "../js/blockLoaderUtil"
+import {getBlockInfo, parseBlockSlots} from "../js/blockLoaderUtil"
 import {ref, computed} from "vue"
 import draggable from "vuedraggable"
 import BlockSelectableElement from "./Selectable/BlockSelectableElement.vue";
@@ -17,16 +17,28 @@ const blocks = ref([])
 const currentBlocks = computed(()=>{
     blocks.value = getBlockInfo()
     console.log(blocks.value)
+    let currentBlockGroup = {}
     for (let i = 0; i < blocks.value.length; i++) {
         console.log(blocks.value[i], " ", props["currentid"])
         if (blocks.value[i].id === props["currentid"]) {
             console.log("Block information updated")
             console.log("Block value: ", blocks.value[i])
-            return blocks.value[i];
+            currentBlockGroup = blocks.value[i]['blocks']
+            console.log("Current Block Group: ", currentBlockGroup)
+            break;
         }
     }
-    console.log("Nothing found!")
-    return []
+    // process the blocks info for drag and drop datas in the app
+    const keys = Object.keys(currentBlockGroup)
+    let results = []
+    for (let i = 0; i < keys.length; i++) {
+        console.log("Processing", currentBlockGroup[keys[i]])
+        let currElement = JSON.parse(JSON.stringify(currentBlockGroup[keys[i]]))
+        currElement["slots"] = parseBlockSlots(currElement["visualize"]["default"])
+        results.push(JSON.parse(JSON.stringify(currElement)))
+    }
+    console.log("Here are the block lists: " + results)
+    return results
 })
 
 console.log("Properties: ", props["currentid"])
@@ -35,11 +47,11 @@ console.log("Properties: ", props["currentid"])
 <template>
     <variableManager v-if="props['currentid'] === 'basic.var'"></variableManager>
     <draggable
-    :list="Object.keys(currentBlocks['blocks'])"
+    :list="currentBlocks"
     :group="{name: 'blocks', pull: 'clone', put: false}"
     item-key="id">
         <template #item="{ element }">
-            <Block :id="element" :content-template="currentBlocks['blocks'][element]['visualize'][getCurrentLanguage()]" :code-template="currentBlocks['blocks'][element]['code']"></Block>
+            <Block :id="element" :content-template="element['visualize'][getCurrentLanguage()]" :code-template="element['code']"></Block>
         </template>
     </draggable>
     <!-- <Block v-for="i in currentBlocks['blocks']" :id="i['code']" :content-template="i['visualize'][getCurrentLanguage()]" :code-template="i['code']"></Block> -->
