@@ -101,7 +101,7 @@ function handleVarDelete(id) {
                 </Empty>
             </Flex>
             <Flex :vertical="false" gap="small" wrap="wrap">
-                <VariableTag v-for="i in vars" :var-props="i" @on-delete="handleVarDelete"/>
+                <VariableTag v-for="i in vars" :var-props="i" @on-delete="handleVarDelete" :enable-on-click="false"/>
             </Flex>
         </Flex>
     </div>

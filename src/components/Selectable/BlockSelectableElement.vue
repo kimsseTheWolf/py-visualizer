@@ -1,7 +1,9 @@
 <script setup>
-import { Dropdown, Menu, MenuItem } from 'ant-design-vue';
+import { Dropdown, Menu, MenuItem, Flex, Popover } from 'ant-design-vue';
 import {ref, computed} from "vue"
+import {getAll} from "../../js/variableUtil"
 import BlockSelectableButton from './BlockSelectableButton.vue';
+import VariableTag from '../VariableTag.vue';
 /**
  * Properties of the element. Index is to indicate which element it is, and acceptType is the value tells the element what things are accepted
  */
@@ -31,26 +33,33 @@ const interfaceControl = ref({
 const interfaceData = ref({
     selectedPage: []
 })
+const variables = ref(getAll())
 
 </script>
 <template>
-    <Dropdown v-model:open="interfaceControl.openOverflow" v-if="props.isInCommand">
+    <Popover v-if="props.isInCommand">
         <BlockSelectableButton :content="btnContent"/>
-        <template #overlay>
+        <template #content>
             <div class="dropdown-main-box">
-                <Menu v-model:selected-keys="interfaceData.selectedPage" mode="inline" class="inbox-menu">
-                    <MenuItem v-for="i in selectableValues" :key="i.value">{{ i.name }}</MenuItem>
-                </Menu>
+                <div style="height: 100% !important;">
+                    <Menu v-model:selected-keys="interfaceData.selectedPage" mode="inline" class="inbox-menu">
+                        <MenuItem v-for="i in selectableValues" :key="i.value">{{ i.name }}</MenuItem>
+                    </Menu>
+                </div>
                 <div class="main-content-box">
                     <div v-if="interfaceData.selectedPage[0] === 'value'" class="content-box"></div>
-                    <div v-else-if="interfaceData.selectedPage[0] === 'var'" class="content-box"></div>
+                    <div v-else-if="interfaceData.selectedPage[0] === 'var'" class="content-box">
+                        <Flex :vertical="false" gap="small" wrap="wrap">
+                            <VariableTag v-for="i in variables" :var-props="i" :enable-on-click="true"></VariableTag>
+                        </Flex>
+                    </div>
                     <div v-else class="content-box full-center">
                         Choose a data type from the menu on the left
                     </div>
                 </div>
             </div>
         </template>
-    </Dropdown>
+    </Popover>
     <BlockSelectableButton :content="btnContent" v-if="!props.isInCommand"/>
 </template>
 <style scoped>
@@ -65,11 +74,11 @@ const interfaceData = ref({
     padding: 5px;
     display: flex;
     flex-direction: row;
-
 }
 
 .inbox-menu {
     box-shadow: none !important;
+    height: 100% !important;
 }
 
 .main-content-box {
