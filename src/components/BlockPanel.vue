@@ -2,6 +2,7 @@
 import {getCurrentLanguage} from "../js/languageUtil"
 import {getBlockInfo, parseBlockSlots} from "../js/blockLoaderUtil"
 import {ref, computed} from "vue"
+import {v4 as uuidv4} from "uuid"
 import draggable from "vuedraggable"
 import BlockSelectableElement from "./Selectable/BlockSelectableElement.vue";
 import variableManager from "./VariableManager.vue"; // basic.var
@@ -41,6 +42,16 @@ const currentBlocks = computed(()=>{
     return results
 })
 
+/**
+ * This function will pre-process the block metadata before it is ready to be clone to the panel
+ * Using seqID prop to avoid invalid id in commandPanel, everything from here will be unique!
+ */
+function cloneCopier(origin) {
+    let newOrigin = JSON.parse(JSON.stringify(origin))
+    newOrigin["seqID"] = newOrigin["id"] + "_" + uuidv4()
+    return JSON.parse(JSON.stringify(newOrigin))
+}
+
 console.log("Properties: ", props["currentid"])
 
 </script>
@@ -49,6 +60,7 @@ console.log("Properties: ", props["currentid"])
     <draggable
     :list="currentBlocks"
     :group="{name: 'blocks', pull: 'clone', put: false}"
+    :clone="(origin)=>{return cloneCopier(origin)}"
     item-key="id">
         <template #item="{ element }">
             <Block :id="element" :content-template="element['visualize'][getCurrentLanguage()]" :code-template="element['code']"></Block>

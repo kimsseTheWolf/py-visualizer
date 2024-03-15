@@ -43,7 +43,7 @@ function handleValueOnChange(type, data) {
     else if (type === "value") {
         btnContent.value = "(Value) " + data
     }
-    emits("onValueChange", {
+    emits("onValueChange", props.index, {
         type: type,
         data: data
     })

@@ -8,6 +8,7 @@ import Block from "./Block.vue"
 import { Dropdown, Menu, MenuItem } from "ant-design-vue"
 
 const currentBlocks = ref([])
+const isDragging = ref(false)
 
 
 function printOnChangeMessage() {
@@ -19,18 +20,23 @@ function handleDelete(index) {
     currentBlocks.value.splice(index, 1)
 }
 
+function handleValueOnChange(blockIndex, paramIndex, infos) {
+    currentBlocks.value[blockIndex]["slots"][paramIndex] = infos.data.id
+}
+
 </script>
 <template>
+    <div>{{ currentBlocks }}</div>
     <div class="main-box">
         <draggable
         :list="currentBlocks"
         group="blocks"
-        item-key="id"
+        item-key="seqID"
         @change="printOnChangeMessage"
         :move="()=>true">
             <template #item="{ element, index }">
                 <div>
-                    <Block :id="element['id'] + '-' + uuidv4()" :content-template="element['visualize'][getCurrentLanguage()]" :code-template="element['code']" :is-in-command="true" @on-delete="handleDelete(index)"></Block>
+                    <Block :index="index" :id="element['seqID']" :content-template="element['visualize'][getCurrentLanguage()]" :code-template="element['code']" :is-in-command="true" @on-delete="handleDelete(index)" @on-value-change="handleValueOnChange"></Block>
                 </div>
             </template>
         </draggable>

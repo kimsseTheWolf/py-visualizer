@@ -18,10 +18,11 @@ const props = defineProps({
     "id": String,
     "contentTemplate": String,
     "codeTemplate": String,
-    "isInCommand": Boolean
+    "isInCommand": Boolean,
+    "index": Number
 })
 
-const emits = defineEmits(["onDelete"])
+const emits = defineEmits(["onDelete", "onValueChange"])
 
 const patterns = {
     paramter: /<([^>]+)>/,
@@ -165,13 +166,17 @@ function regenerateTemplate() {
 function handleDelete() {
     emits("onDelete")
 }
+
+function handleOnValueChange(index, info) {
+    emits("onValueChange", props.index, index, info)
+}
 </script>
 <template>
     <div class="main-block" :id="props.id">
         <div>{{ regenerateTemplate() }}</div>
         <template v-for="i in contents">
             <div v-if="i.type === 'content'" class="inner-element">{{ i.content }}</div>
-            <BlockSelectableElement v-if="i.type === 'param'" :accept-type="i.acceptTypes" :index="i.index" :is-in-command="props.isInCommand"></BlockSelectableElement>
+            <BlockSelectableElement v-if="i.type === 'param'" :accept-type="i.acceptTypes" :index="i.index" :is-in-command="props.isInCommand" @on-value-change="handleOnValueChange"></BlockSelectableElement>
         </template>
         <MinusCircleOutlined class="remove-icon-btn" v-if="props.isInCommand" @click="handleDelete"></MinusCircleOutlined>
     </div>
