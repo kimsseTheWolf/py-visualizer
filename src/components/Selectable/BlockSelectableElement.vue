@@ -7,9 +7,16 @@ import VariableTag from '../VariableTag.vue';
 /**
  * Properties of the element. Index is to indicate which element it is, and acceptType is the value tells the element what things are accepted
  */
-const props = defineProps(["index", "acceptType", "isInCommand"])
+const props = defineProps(["index", "acceptType", "isInCommand", "value"])
 const emits = defineEmits(["onValueChange"])
-const btnContent = ref("")
+const btnContent = computed(()=>{
+    if (props.value === undefined || props.value === null) {
+        return ""
+    }
+    else {
+        return props.value
+    }
+})
 const selectableValues = computed(()=>{
     let result = []
     for (let i = 0; i < props.acceptType.length; i++) {
@@ -45,7 +52,8 @@ function handleValueOnChange(type, data) {
     }
     emits("onValueChange", props.index, {
         type: type,
-        data: data
+        data: data,
+        content: btnContent.value
     })
 }
 

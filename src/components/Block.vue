@@ -19,7 +19,8 @@ const props = defineProps({
     "contentTemplate": String,
     "codeTemplate": String,
     "isInCommand": Boolean,
-    "index": Number
+    "index": Number,
+    "slots": Array
 })
 
 const emits = defineEmits(["onDelete", "onValueChange"])
@@ -170,13 +171,30 @@ function handleDelete() {
 function handleOnValueChange(index, info) {
     emits("onValueChange", props.index, index, info)
 }
+
+function getSlotValue(index) {
+    if (props.slots === undefined || props.slots === null) {
+        return undefined
+    }
+    else {
+        console.log("What is love? ", props.slots)
+        if (props.slots[index] === undefined || props.slots[index] === null) {
+            return undefined
+        }
+        else {
+            if (props.slots[index].type === "var") {
+                return "(Variable) " + props.slots[index].data.key
+            }
+        }
+    }
+}
 </script>
 <template>
     <div class="main-block" :id="props.id">
         <div>{{ regenerateTemplate() }}</div>
         <template v-for="i in contents">
             <div v-if="i.type === 'content'" class="inner-element">{{ i.content }}</div>
-            <BlockSelectableElement v-if="i.type === 'param'" :accept-type="i.acceptTypes" :index="i.index" :is-in-command="props.isInCommand" @on-value-change="handleOnValueChange"></BlockSelectableElement>
+            <BlockSelectableElement v-if="i.type === 'param'" :accept-type="i.acceptTypes" :index="i.index" :is-in-command="props.isInCommand" @on-value-change="handleOnValueChange" :value="getSlotValue(i.index)"></BlockSelectableElement>
         </template>
         <MinusCircleOutlined class="remove-icon-btn" v-if="props.isInCommand" @click="handleDelete"></MinusCircleOutlined>
     </div>
