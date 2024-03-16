@@ -1,6 +1,5 @@
 <script setup>
-import draggable from "vuedraggable"
-import { Dropdown, Menu, MenuItem, MenuDivider, Button, Input, Tabs, TabPane, Modal, ButtonGroup, Select, SelectOption, message } from 'ant-design-vue';
+import { Dropdown, Menu, MenuItem, MenuDivider, Button, Input, Tabs, TabPane, Modal, ButtonGroup, Select, SelectOption, message, Flex, Textarea } from 'ant-design-vue';
 import {
   UploadOutlined, 
   SaveOutlined, 
@@ -32,10 +31,12 @@ const interfaceControl = ref({
   showFileNameInput: false,
   showCodePreview: true,
   showLanguageModal: false,
+  showOpenFileModal: false
 })
 const interfaceData = ref({
   blockTabActiveKey: "basic.io",
   currentSelectedLang: getCurrentLanguage(),
+  openedFileContent: "",
 })
 const VSOPTIONS = {
   automaticLayout: true,
@@ -67,6 +68,8 @@ const tabsInfo = computed(()=>{
   }
   return result
 })
+
+const commandPanelValue = ref([])
 
 /**
  * Get the event from the tab box. Change the blocks to the contents that belongs to the tab. (Handler)
@@ -103,7 +106,7 @@ function handleSetLanguage() {
             <MenuBtn>{{ t('toolBar.menu.file.title') }}</MenuBtn>
             <template #overlay>
               <Menu>
-                <MenuItem key="1">
+                <MenuItem key="1" @click="interfaceControl.showOpenFileModal = true">
                   <UploadOutlined/>
                   {{ t('toolBar.menu.file.upload') }}
                 </MenuItem>
@@ -205,6 +208,17 @@ function handleSetLanguage() {
       <Button type="primary" @click="handleSetLanguage">Apply</Button>
       <Button @click="interfaceControl.showLanguageModal = !interfaceControl.showLanguageModal">Cancle</Button>
     </template>
+  </Modal>
+
+  <Modal title="Upload file" v-model:open="interfaceControl.showOpenFileModal">
+    <Flex :vertical="true" gap="small">
+      <div>Copy and paste Metadata file content to the textbox below:</div>
+      <Textarea :bordered="false" :auto-size="{ minRows: 2, maxRows: 10 }" placeholder="Copy and paste content here" v-model:value="interfaceData.openedFileContent"></Textarea>
+      <template #footer>
+        <Button type="primary">Load</Button>
+        <Button @click="interfaceControl.showOpenFileModal = false">Cancel</Button>
+      </template>
+    </Flex>
   </Modal>
 </template>
 
