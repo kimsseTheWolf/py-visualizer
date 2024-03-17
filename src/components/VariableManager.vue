@@ -50,6 +50,12 @@ function createNewVariable() {
     else if (type === dataTypes.boolean) {
         value = newVarValue.boolean
     }
+    else if (type === dataTypes.list) {
+        value = []
+    }
+    else if (type === dataTypes.dictionary) {
+        value = {}
+    }
     else {
         message.error("创建变量出现错误：未知的数据类型")
         return
@@ -119,7 +125,7 @@ function handleVarDelete(id) {
                     <InputNumber v-model:value="newVarValue.number"></InputNumber>
                 </FormItem>
                 <FormItem v-if="newVarInfo.type === dataTypes.string" label="初始值" name="name" :rules="[{required: false, message: '请指定初始值！'}]">
-                    <Input placeholder="字符串初始值" v-model:value="newVarValue.string"></Input>
+                       <Input placeholder="字符串初始值" v-model:value="newVarValue.string"></Input>
                 </FormItem>
                 <FormItem v-if="newVarInfo.type === dataTypes.boolean" label="初始值" name="name" :rules="[{required: false, message: '请指定初始值！'}]">
                     <Select v-model:value="newVarValue.boolean">

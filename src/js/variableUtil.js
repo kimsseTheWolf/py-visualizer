@@ -22,7 +22,9 @@ const varElement = {
 export const dataTypes = {
     number: "Number",
     string: "String",
-    boolean: "Bool"
+    boolean: "Bool",
+    list: "List",
+    dictionary: "Dictionary"
 }
 
 /**

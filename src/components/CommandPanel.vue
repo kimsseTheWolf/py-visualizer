@@ -16,7 +16,7 @@ function printOnChangeMessage() {
     console.log(currentBlocks.value)
 }
 
-function handleDelete(index) {
+function handleDelete(index) { 
     currentBlocks.value.splice(index, 1)
 }
 
