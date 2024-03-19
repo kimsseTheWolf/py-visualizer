@@ -90,11 +90,11 @@ function handleValueOnChange(type, data) {
     width: 50vh;
     height: 30vh;
     background-color: white;
-    border-style: solid;
+    border-style: none;
     border-width: 1px;
     border-color: rgba(0, 0, 0, 0.1);
     border-radius: 7px;
-    padding: 5px;
+    /* padding: 5px; */
     display: flex;
     flex-direction: row;
 }
