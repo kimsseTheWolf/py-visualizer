@@ -76,13 +76,13 @@ export function createNewVar(key, type, value=null) {
 // TODO: modify
 /**
  * Change the value of the variable
- * @param {String} key Name of the variable
+ * @param {String} id Name of the variable
  * @param {any} value The new value of the variable
  * @returns Success
  */
-export function setValue(key, value) {
+export function setValue(id, value) {
     for (let i = 0; i < varPool.length; i++) {
-        if (varPool[i].key === key) {
+        if (varPool[i].id === id) {
             varPool[i].value = value
             return true
         }

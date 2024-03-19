@@ -3,10 +3,11 @@ import { Flex, message } from 'ant-design-vue';
 import { Button, Empty, Input, Modal, Form, FormItem, Select, SelectOption, InputNumber, Tag } from 'ant-design-vue';
 import { ref, computed, reactive, toRefs, toRef } from 'vue';
 import {PlusCircleOutlined, ReloadOutlined} from "@ant-design/icons-vue"
-import { getAll, dataTypes, createNewVar, deleteVar } from "../js/variableUtil"
+import { getAll, dataTypes, createNewVar, deleteVar, setValue } from "../js/variableUtil"
 import VariableTag from "./VariableTag.vue"
 
 const vars = ref([])
+const emits = defineEmits(["onVarChange"])
 vars.value = getAll()
 const shouldEnableCreateBtn = computed(()=>{
     if (newVarInfo.name === "" || newVarInfo.type === "") {
@@ -88,6 +89,22 @@ function handleVarDelete(id) {
     message.success("删除成功")
 }
 
+/**
+ * @param {Object} info the metadata of changed variable
+ * 
+ * Inclduing the following information:
+ *  - id
+ *  - type
+ *  - newValue
+ */
+function handleOnChange(info) {
+    console.log("Value has been modified! Received!", info.id, info.value)
+    setValue(info.id, info.value)
+    vars.value = getAll()
+    console.log("New list: ", vars.value)
+    emits("onVarChange", info)
+}
+
 </script>
 <template>
     <div class="main-block">
@@ -107,7 +124,7 @@ function handleVarDelete(id) {
                 </Empty>
             </Flex>
             <Flex :vertical="false" gap="small" wrap="wrap">
-                <VariableTag v-for="i in vars" :var-props="i" @on-delete="handleVarDelete" :enable-on-click="false"/>
+                <VariableTag v-for="i in vars" :var-props="i" @on-delete="handleVarDelete" @on-modify="handleOnChange" :enable-on-click="false"/>
             </Flex>
         </Flex>
     </div>

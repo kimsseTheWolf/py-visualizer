@@ -1,11 +1,11 @@
 <script setup>
-import { Tag, Popover, List, ListItem, ListItemMeta, Flex, Button, Modal, Input, InputNumber, Select, SelectOption, Form, FormItem } from 'ant-design-vue';
+import { Tag, Popover, List, ListItem, ListItemMeta, Flex, Button, Modal, Input, InputNumber, Select, SelectOption, Form, FormItem, message } from 'ant-design-vue';
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { ref } from 'vue';
 import { dataTypes } from "../js/variableUtil"
 
 const props = defineProps(["varProps", "enableOnClick"])
-const emits = defineEmits(["onDelete"])
+const emits = defineEmits(["onDelete", "onModify"])
 
 const colors= {
     Number: "blue",
@@ -47,6 +47,23 @@ function handleClickChange(visible) {
 function handleDelete() {
     emits("onDelete", props.varProps.id)
 }
+
+function handleOpenModal() {
+    // apply the current value to the modify value first
+    newVarValue.value[props['varProps'].type] = props['varProps'].value
+    interfaceControl.value.showModifyModal = true
+}
+
+function handleOnValueChange() {
+    const newValueInfo = {
+        id: props['varProps'].id,
+        type: props['varProps'].type,
+        value: JSON.parse(JSON.stringify(newVarValue.value[props['varProps'].type]))
+    }
+    emits("onModify", newValueInfo)
+    message.info("已修改变量")
+    interfaceControl.value.showModifyModal = false
+}
 </script>
 <template>
     <Popover :title="props['varProps'].key + '详情'" placement="topLeft" style="z-index: 10000;">
@@ -67,7 +84,7 @@ function handleDelete() {
                     </ListItem>
                 </List>
                 <Flex :vertical="false" gap="small" v-if="!enableOnClick">
-                    <Button type="text" @click="interfaceControl.showModifyModal = true"><EditOutlined/>修改</Button>
+                    <Button type="text" @click="handleOpenModal()"><EditOutlined/>修改</Button>
                     <Button type="text" danger @click="handleDelete"><DeleteOutlined/>删除</Button>
                 </Flex>
             </Flex>
@@ -84,14 +101,14 @@ function handleDelete() {
                 <SelectOption :value="false">False</SelectOption>
             </Select>
             <Form v-if="props['varProps'].type === dataTypes.list">
-                
+                <FormItem>This is list</FormItem>
             </Form>
             <Form v-if="props['varProps'].type === dataTypes.dictionary">
-                
+                <FormItem>This is dictionary</FormItem>
             </Form>
         </Flex>
         <template #footer>
-            <Button type="primary">应用</Button>
+            <Button type="primary" @click="handleOnValueChange()">应用</Button>
             <Button @click="interfaceControl.showModifyModal = false">取消</Button>
         </template>
     </Modal>
