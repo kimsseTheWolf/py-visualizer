@@ -194,7 +194,8 @@ function getSlotValue(index) {
         <div>{{ regenerateTemplate() }}</div>
         <template v-for="i in contents">
             <div v-if="i.type === 'content'" class="inner-element">{{ i.content }}</div>
-            <BlockSelectableElement v-if="i.type === 'param'" :accept-type="i.acceptTypes" :index="i.index" :is-in-command="props.isInCommand" @on-value-change="handleOnValueChange" :value="getSlotValue(i.index)"></BlockSelectableElement>
+            <BlockSelectableElement v-if="i.type === 'param' && (i.acceptTypes[0] !== 'nested' && i.acceptTypes.length > 1)" :accept-type="i.acceptTypes" :index="i.index" :is-in-command="props.isInCommand" @on-value-change="handleOnValueChange" :value="getSlotValue(i.index)"></BlockSelectableElement>
+            <div class="slots-occupier" v-if="i.type === 'param' && (i.acceptTypes[0] === 'nested' && i.acceptTypes.length === 1)">A nested slot occupies here</div>
         </template>
         <MinusCircleOutlined class="remove-icon-btn" v-if="props.isInCommand" @click="handleDelete"></MinusCircleOutlined>
     </div>
@@ -224,6 +225,14 @@ function getSlotValue(index) {
     cursor: pointer;
 }
 .remove-icon-btn:hover {
+    color: red;
+}
+.slots-occupier {
+    margin: 5px;
+    padding: 5px;
+    display: block;
+    border-radius: 5px;
+    background-color: rgba(255, 0, 0, 0.1);
     color: red;
 }
 </style>

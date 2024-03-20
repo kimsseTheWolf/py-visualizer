@@ -5,6 +5,14 @@
         "zh-CN": "程序控制流"
     },
     "blocks": {
-        
+        "basic.cf.if": {
+            "id": "basic.cf.if",
+            "visualize": {
+                "default": "If <[0]{accept:{var&value}}>, then <[1]{accept:{nested}}>",
+                "en-US": "If <[0]{accept:{var&value}}>, then <[1]{accept:{nested}}>",
+                "zh-CN": "If <[0]{accept:{var&value}}>, then <[1]{accept:{nested}}>"
+            },
+            "code": "print(<0>)"
+        }
     }
 }
