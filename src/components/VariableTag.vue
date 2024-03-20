@@ -5,7 +5,7 @@ import { ref } from 'vue';
 import { dataTypes } from "../js/variableUtil"
 
 const props = defineProps(["varProps", "enableOnClick"])
-const emits = defineEmits(["onDelete", "onModify"])
+const emits = defineEmits(["onDelete", "onModify", "click"])
 
 const colors= {
     Number: "blue",
@@ -88,6 +88,12 @@ function addDictionaryItem(key, value) {
 function removeDictionaryItem(key) {
     delete newVarValue.value.Dictionary[key]
 }
+
+function handleOnClick() {
+    if (props.enableOnClick === true) {
+        emits("click")
+    }
+}
 </script>
 <template>
     <Popover :title="props['varProps'].key + '详情'" placement="topLeft" style="z-index: 10000;">
@@ -113,7 +119,7 @@ function removeDictionaryItem(key) {
                 </Flex>
             </Flex>
         </template>
-        <Tag :color="colors[props['varProps'].type]" style="font-size: 15px; padding: 5px; cursor: pointer;">{{props['varProps'].key}}</Tag>
+        <Tag :color="colors[props['varProps'].type]" style="font-size: 15px; padding: 5px; cursor: pointer;" @click="handleOnClick">{{props['varProps'].key}}</Tag>
     </Popover>
     <Modal title="修改变量初始值" v-model:open="interfaceControl.showModifyModal">
         <Flex :vertical="true" gap="small">

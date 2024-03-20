@@ -44,6 +44,7 @@ const interfaceData = ref({
 const variables = ref(getAll())
 
 function handleValueOnChange(type, data) {
+    console.log("Change Value Handled!")
     if (type === "var") {
         btnContent.value = "(Variable) " + data.key
     }
