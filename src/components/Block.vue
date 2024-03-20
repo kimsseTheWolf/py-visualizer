@@ -125,6 +125,7 @@ function processBlockContent() {
             }
             // get the accept types for each
             // console.log("Does match accept types: ", contents.value[i].content.match(patterns.acceptTypes))
+            let needInitialValue = false
             if (contents.value[i].content.match(patterns.acceptTypes)) {
                 for (const match of contents.value[i].content.matchAll(patterns.acceptTypes)) {
                     const accepts = match[1].split("&")
@@ -134,6 +135,11 @@ function processBlockContent() {
                     if (accepts.length === 0) {
                         contents.value[i].acceptTypes.push(match[1])
                     }
+
+                    // nested specific setup identifier
+                    if (contents.value[i].acceptTypes.length === 1 && contents.value[i].acceptTypes[0] === 'nested') {
+                        needInitialValue = true
+                    }
                 }
             }
             else {
@@ -142,7 +148,12 @@ function processBlockContent() {
             }
 
             // append to the slot
-            paramSlots.value[contents.value[i].index] = null
+            if (!needInitialValue) {
+                paramSlots.value[contents.value[i].index] = null
+            }
+            else {
+                paramSlots.value[contents.value[i].index] = []
+            }
         }
     }
 
@@ -194,7 +205,7 @@ function getSlotValue(index) {
         <div>{{ regenerateTemplate() }}</div>
         <template v-for="i in contents">
             <div v-if="i.type === 'content'" class="inner-element">{{ i.content }}</div>
-            <BlockSelectableElement v-if="i.type === 'param' && (i.acceptTypes[0] !== 'nested' && i.acceptTypes.length > 1)" :accept-type="i.acceptTypes" :index="i.index" :is-in-command="props.isInCommand" @on-value-change="handleOnValueChange" :value="getSlotValue(i.index)"></BlockSelectableElement>
+            <BlockSelectableElement v-if="i.type === 'param' && (i.acceptTypes[0] !== 'nested' && i.acceptTypes.length >= 1)" :accept-type="i.acceptTypes" :index="i.index" :is-in-command="props.isInCommand" @on-value-change="handleOnValueChange" :value="getSlotValue(i.index)"></BlockSelectableElement>
             <div class="slots-occupier" v-if="i.type === 'param' && (i.acceptTypes[0] === 'nested' && i.acceptTypes.length === 1)">A nested slot occupies here</div>
         </template>
         <MinusCircleOutlined class="remove-icon-btn" v-if="props.isInCommand" @click="handleDelete"></MinusCircleOutlined>
