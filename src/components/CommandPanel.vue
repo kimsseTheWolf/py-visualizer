@@ -26,7 +26,7 @@ function handleValueOnChange(blockIndex, paramIndex, infos) {
 
 </script>
 <template>
-    <!-- <div>{{ currentBlocks }}</div> -->
+    <div>{{ currentBlocks }}</div>
     <div class="main-box">
         <draggable
         :list="currentBlocks"
