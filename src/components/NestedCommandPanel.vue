@@ -2,6 +2,7 @@
 import draggable from "vuedraggable"
 import {ref, computed} from "vue"
 import {getCurrentLanguage} from "../js/languageUtil"
+import { Empty } from "ant-design-vue"
 import Block from "./Block.vue"
 
 /**
@@ -20,14 +21,7 @@ const props = defineProps({
 /**
  * The pre-processed currentBlocks to avoid undefined and non array elements
  */
-const currentBlocks = computed(()=>{
-    if (props.blocks === null || props.blocks === undefined) {
-        return []
-    }
-    else {
-        return JSON.parse(JSON.stringify(props.blocks))
-    }
-})
+const currentBlocks = ref(JSON.parse(JSON.stringify(props.blocks)))
 
 /**
  * Events
@@ -54,6 +48,7 @@ function handleValueOnChange(blockIndex, paramIndex, infos) {
 <template>
     <!-- <div>{{ currentBlocks }}</div> -->
     <div class="main-box">
+        <Empty v-if="currentBlocks.length == []" description="Drag and drop a block to here"></Empty>
         <draggable
         :list="currentBlocks"
         group="blocks"

@@ -4,6 +4,7 @@ import { MinusCircleOutlined } from "@ant-design/icons-vue"
 import { ref } from 'vue';
 import draggableComponent from 'vuedraggable';
 import BlockSelectableElement from './Selectable/BlockSelectableElement.vue';
+import NestedCommandPanel from './NestedCommandPanel.vue';
 
 /**
  * Properties for the Block Element
@@ -138,6 +139,7 @@ function processBlockContent() {
 
                     // nested specific setup identifier
                     if (contents.value[i].acceptTypes.length === 1 && contents.value[i].acceptTypes[0] === 'nested') {
+                        console.log("Marked this slot as an nested block slot")
                         needInitialValue = true
                     }
                 }
@@ -199,6 +201,27 @@ function getSlotValue(index) {
         }
     }
 }
+
+function getNestedSlotValue(index) {
+    if (props.slots === undefined || props.slots === null) {
+        console.log("Unprepared props")
+        notification.error("Unprepared props")
+        console.log(props.slots)
+        return undefined
+    }
+    else {
+        console.log("What is love? ", props.slots)
+        if (props.slots[index] === undefined || props.slots[index] === null) {
+            console.log("Unprepared slot element")
+            notification.error("Unprepared slot element")
+            return undefined
+        }
+        else {
+            console.log(props.slots[index])
+            return props.slots[index]
+        }
+    }
+}
 </script>
 <template>
     <div class="main-block" :id="props.id">
@@ -206,7 +229,7 @@ function getSlotValue(index) {
         <template v-for="i in contents">
             <div v-if="i.type === 'content'" class="inner-element">{{ i.content }}</div>
             <BlockSelectableElement v-if="i.type === 'param' && (i.acceptTypes[0] !== 'nested' && i.acceptTypes.length >= 1)" :accept-type="i.acceptTypes" :index="i.index" :is-in-command="props.isInCommand" @on-value-change="handleOnValueChange" :value="getSlotValue(i.index)"></BlockSelectableElement>
-            <div class="slots-occupier" v-if="i.type === 'param' && (i.acceptTypes[0] === 'nested' && i.acceptTypes.length === 1)">A nested slot occupies here</div>
+            <NestedCommandPanel v-if="i.type === 'param' && (i.acceptTypes[0] === 'nested' && i.acceptTypes.length === 1)" :blocks="getNestedSlotValue(i.index)"></NestedCommandPanel>
         </template>
         <MinusCircleOutlined class="remove-icon-btn" v-if="props.isInCommand" @click="handleDelete"></MinusCircleOutlined>
     </div>

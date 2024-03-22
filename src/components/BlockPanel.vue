@@ -36,9 +36,10 @@ const currentBlocks = computed(()=>{
         console.log("Processing", currentBlockGroup[keys[i]])
         let currElement = JSON.parse(JSON.stringify(currentBlockGroup[keys[i]]))
         currElement["slots"] = parseBlockSlots(currElement["visualize"]["default"])
+        console.log("Current Elements Slots: ", currElement["slots"])
         results.push(JSON.parse(JSON.stringify(currElement)))
     }
-    console.log("Here are the block lists: " + results)
+    console.log("Here are the block lists: ",  results)
     return results
 })
 
@@ -63,7 +64,7 @@ console.log("Properties: ", props["currentid"])
     :clone="(origin)=>{return cloneCopier(origin)}"
     item-key="id">
         <template #item="{ element }">
-            <Block :id="element" :content-template="element['visualize'][getCurrentLanguage()]" :code-template="element['code']"></Block>
+            <Block :id="element" :content-template="element['visualize'][getCurrentLanguage()]" :code-template="element['code']" :slots="element['slots']"></Block>
         </template>
     </draggable>
     <!-- <Block v-for="i in currentBlocks['blocks']" :id="i['code']" :content-template="i['visualize'][getCurrentLanguage()]" :code-template="i['code']"></Block> -->

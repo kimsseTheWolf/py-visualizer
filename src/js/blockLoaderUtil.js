@@ -86,13 +86,20 @@ export function parseBlockSlots(contentTemplate) {
         })
         slotSegment = ""
     }
+    console.log("Block Loader Utility: Contents - ", contents)
 
     let results = []
     // iterate to set param slot information
     for (let i = 0; i < contents.length; i++) {
         if (contents[i].type === "param") {
+            console.log("Block Loader Utility: Checking acceptTypes - ", contents[i].content.indexOf("nested"))
+            if (contents[i].content.indexOf("nested") !== -1) {
+                results.push([])
+                continue;
+            }
             results.push(undefined)
         }
     }
+    console.log("Block Loader Utility: Results - ", results)
     return results
 }
