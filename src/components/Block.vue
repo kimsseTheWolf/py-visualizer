@@ -229,7 +229,7 @@ function getNestedSlotValue(index) {
         <template v-for="i in contents">
             <div v-if="i.type === 'content'" class="inner-element">{{ i.content }}</div>
             <BlockSelectableElement v-if="i.type === 'param' && (i.acceptTypes[0] !== 'nested' && i.acceptTypes.length >= 1)" :accept-type="i.acceptTypes" :index="i.index" :is-in-command="props.isInCommand" @on-value-change="handleOnValueChange" :value="getSlotValue(i.index)"></BlockSelectableElement>
-            <NestedCommandPanel v-if="i.type === 'param' && (i.acceptTypes[0] === 'nested' && i.acceptTypes.length === 1)" :blocks="getNestedSlotValue(i.index)"></NestedCommandPanel>
+            <NestedCommandPanel v-if="i.type === 'param' && (i.acceptTypes[0] === 'nested' && i.acceptTypes.length === 1)" :blocks="getNestedSlotValue(i.index)" :index="i.index" @on-content-change="handleOnValueChange"></NestedCommandPanel>
         </template>
         <MinusCircleOutlined class="remove-icon-btn" v-if="props.isInCommand" @click="handleDelete"></MinusCircleOutlined>
     </div>

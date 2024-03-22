@@ -34,6 +34,7 @@ const emits = defineEmits(["onContentChange"])
 function printOnChangeMessage() {
     console.log("The full block list sequence: ")
     console.log(currentBlocks.value)
+    handleOnContentChange()
 }
 
 function handleDelete(index) { 
@@ -42,6 +43,11 @@ function handleDelete(index) {
 
 function handleValueOnChange(blockIndex, paramIndex, infos) {
     currentBlocks.value[blockIndex]["slots"][paramIndex] = infos
+    handleOnContentChange()
+}
+
+function handleOnContentChange() {
+    emits("onContentChange", props.index, currentBlocks.value)
 }
 
 </script>
