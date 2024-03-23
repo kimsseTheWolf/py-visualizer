@@ -51,17 +51,36 @@ const variables = ref(getAll())
 
 function handleValueOnChange(type, data) {
     console.log("Change Value Handled!")
-    if (type === "var") {
-        btnContent.value = "(Variable) " + data.key
-    }
-    else if (type === "value") {
-        btnContent.value = "(Value) " + data
-    }
     emits("onValueChange", props.index, {
         type: type,
         data: data,
         content: btnContent.value
     })
+}
+
+function handleStaticValueOnChange() {
+    console.log("Change Handled Value Handled!")
+    // pre-process data
+    let value = undefined
+    if (interfaceData.value.selectedTab === "0") {
+        value = "\"" + interfaceData.value.setValue.string + "\""
+    }
+    else if (interfaceData.value.selectedTab === "1") {
+        value = interfaceData.value.setValue.number
+    }
+    else if (interfaceData.value.selectedTab === "2") {
+        value = interfaceData.value.setValue.boolean
+    }
+    // send the data out for update
+    emits("onValueChange", props.index, {
+        type: 'value',
+        data: value,
+        content: ""
+    })
+    // reset local input
+    interfaceData.value.setValue.string = ""
+    interfaceData.value.setValue.number = 0
+    interfaceData.value.setValue.boolean = false
 }
 
 </script>
@@ -92,7 +111,7 @@ function handleValueOnChange(type, data) {
                                     </Select>
                                 </TabPane>
                             </Tabs>
-                            <Button type="primary">Apply current value</Button>
+                            <Button type="primary" @click="handleStaticValueOnChange">Apply current value</Button>
                         </Flex> 
                     </div>
                     <div v-else-if="interfaceData.selectedPage[0] === 'var'" class="content-box">

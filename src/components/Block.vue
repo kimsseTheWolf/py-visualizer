@@ -198,6 +198,9 @@ function getSlotValue(index) {
             if (props.slots[index].type === "var") {
                 return "(Variable) " + props.slots[index].data.key
             }
+            else if (props.slots[index].type === "value") {
+                return "(Value) " + props.slots[index].data
+            }
         }
     }
 }
