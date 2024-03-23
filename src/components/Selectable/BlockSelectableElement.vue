@@ -98,7 +98,9 @@ function handleValueOnChange(type, data) {
                     <div v-else-if="interfaceData.selectedPage[0] === 'var'" class="content-box">
                         <Flex :vertical="false" gap="small" wrap="wrap">
                             <VariableTag v-for="i in variables" :var-props="i" :enable-on-click="true" @click="handleValueOnChange('var', i)"></VariableTag>
-                            <div v-if="variables.length === 0">No variables right now. You could create one in the variable section.</div>
+                        </Flex>
+                        <Flex :vertical="true" gap="small" align="center" justify="center" v-if="variables.length === 0" style="height: 100%;">
+                            <Empty description="No variables right now. Create one from the manager under variable tab"/>
                         </Flex>
                     </div>
                     <div v-else class="content-box full-center">
