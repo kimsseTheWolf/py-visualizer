@@ -1,5 +1,5 @@
 <script setup>
-import { Dropdown, Menu, MenuItem, MenuDivider, Button, Input, Tabs, TabPane, Modal, ButtonGroup, Select, SelectOption, message, Flex, Textarea } from 'ant-design-vue';
+import { Dropdown, Menu, MenuItem, MenuDivider, Button, Input, Tabs, TabPane, Modal, ButtonGroup, Select, SelectOption, message, Flex, Textarea, notification } from 'ant-design-vue';
 import {
   UploadOutlined, 
   SaveOutlined, 
@@ -31,12 +31,17 @@ const interfaceControl = ref({
   showFileNameInput: false,
   showCodePreview: true,
   showLanguageModal: false,
-  showOpenFileModal: false
+  showOpenFileModal: false,
+  showSaveContentModal: false,
+  onSaveTrigger: false,
+  onLoadTrigger: false
 })
 const interfaceData = ref({
   blockTabActiveKey: "basic.io",
   currentSelectedLang: getCurrentLanguage(),
   openedFileContent: "",
+  convertedOpenedFileContent: {},
+  savedContent: []
 })
 const VSOPTIONS = {
   automaticLayout: true,
@@ -84,6 +89,34 @@ function handleSetLanguage() {
   setCurrentLanguage(interfaceData.value.currentSelectedLang)
   message.success("Success! In order to take effect, save your work and refresh this page")
 }
+
+function triggerOnSave() {
+  interfaceControl.value.onSaveTrigger = true
+}
+
+function handleOnSave(_setter, savedContent) {
+  interfaceControl.value.onSaveTrigger = false
+  interfaceData.value.savedContent = JSON.stringify(savedContent)
+
+  // trigger on save modal
+  interfaceControl.value.showSaveContentModal = true
+}
+
+function triggerOnLoad() {
+  console.log("Triggered")
+  try {
+    interfaceData.value.convertedOpenedFileContent = JSON.parse(interfaceData.value.openedFileContent)
+    console.log(interfaceData.value.convertedOpenedFileContent)
+  } catch (error) {
+    notification.error("Unable to load metadata file: Syntax error or file corrupted!")
+    return
+  }
+  interfaceControl.value.onLoadTrigger = true
+}
+
+function handleOnLoad() {
+  interfaceControl.value.onLoadTrigger = false
+}
 </script>
 
 <template>
@@ -110,7 +143,7 @@ function handleSetLanguage() {
                   <UploadOutlined/>
                   {{ t('toolBar.menu.file.upload') }}
                 </MenuItem>
-                <MenuItem key="2">
+                <MenuItem key="2" @click="triggerOnSave">
                   <SaveOutlined/>
                   {{ t('toolBar.menu.file.save') }}
                 </MenuItem>
@@ -182,7 +215,7 @@ function handleSetLanguage() {
         <BlockPanel :currentid="interfaceData.blockTabActiveKey"/>
       </div>
       <div class="work-panel panel" :style="WorkPanelFlex">
-        <CommandPanel/>
+        <CommandPanel :save-trigger="interfaceControl.onSaveTrigger" @on-save-trigger="handleOnSave" :load-trigger="interfaceControl.onLoadTrigger" :load-file-content="interfaceData.convertedOpenedFileContent" @on-load-trigger="handleOnLoad"/>
       </div>
       <div class="code-panel panel" v-if="interfaceControl.showCodePreview">
         <vue-monaco-editor
@@ -214,11 +247,18 @@ function handleSetLanguage() {
     <Flex :vertical="true" gap="small">
       <div>Copy and paste Metadata file content to the textbox below:</div>
       <Textarea :bordered="false" :auto-size="{ minRows: 2, maxRows: 10 }" placeholder="Copy and paste content here" v-model:value="interfaceData.openedFileContent"></Textarea>
-      <template #footer>
-        <Button type="primary">Load</Button>
-        <Button @click="interfaceControl.showOpenFileModal = false">Cancel</Button>
-      </template>
     </Flex>
+    <template #footer>
+      <Button type="primary" @click="triggerOnLoad">Load</Button>
+      <Button @click="interfaceControl.showOpenFileModal = false">Cancel</Button>
+    </template>
+  </Modal>
+  <Modal title="Save file" v-model:visible="interfaceControl.showSaveContentModal">
+    <div>Copy and paste Metadata file content to the textbox below:</div>
+    <Textarea :bordered="false" :auto-size="{ minRows: 2, maxRows: 10 }" v-model:value="interfaceData.savedContent" readonly></Textarea>
+    <template #footer>
+        <Button @click="interfaceControl.showSaveContentModal = false">Cancel</Button>
+      </template>
   </Modal>
 </template>
 
