@@ -1,14 +1,58 @@
 <script setup>
 import draggable from "vuedraggable"
-import {ref, computed} from "vue"
-import {v4 as uuidv4} from "uuid"
+import {ref, computed, watchEffect} from "vue"
 import {getCurrentLanguage} from "../js/languageUtil"
-import {getBlockInfo} from "../js/blockLoaderUtil"
+import {getAll, deleteAll, createNewVar} from "../js/variableUtil"
 import Block from "./Block.vue"
-import { Dropdown, Menu, MenuItem } from "ant-design-vue"
+import { notification } from "ant-design-vue"
 
 const currentBlocks = ref([])
 const isDragging = ref(false)
+const props = defineProps(["saveTrigger", "loadTrigger", "loadFileContent"])
+const emits = defineEmits(["onSaveTrigger", "onLoadTrigger"])
+
+watchEffect(() => {
+    if (props.saveTrigger) {
+        console.log("Received ONSAVE EVENT")
+        const savedContentValue = {
+            variables: JSON.parse(JSON.stringify(getAll())),
+            content: currentBlocks.value
+        }
+        emits("onSaveTrigger", !props.saveTrigger, savedContentValue)
+    }
+    if (props.loadTrigger) {
+        emits("onLoadTrigger")
+        console.log("Received ONLOAD EVENT")
+        let result = parseVariables(props.loadFileContent['variables'])
+        if (!result) {
+            return;
+        }
+        currentBlocks.value = props.loadFileContent['content']
+        return;
+    }
+})
+
+/**
+ * Parse vars from metadata and add them into the variable pools
+ * @param {Array} varList All variables metadata
+ */
+function parseVariables(varList) {
+    // first delete all current variables
+    deleteAll()
+
+    // iterate the list to add new variables
+    try {
+        for (let i = 0; i < varList.length; i++) {
+            const e = varList[i]
+            createNewVar(e["key"], e["type"], e["value"])
+        }
+        return true
+    }
+    catch (error) {
+        notification.error("Error while loading your content: " + error)
+        return false
+    }
+}
 
 
 function printOnChangeMessage() {

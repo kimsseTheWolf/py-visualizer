@@ -136,3 +136,7 @@ export function deleteVar(id) {
     }
     return false
 }
+
+export function deleteAll() {
+    varPool = []
+}
