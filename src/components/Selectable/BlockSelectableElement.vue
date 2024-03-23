@@ -1,5 +1,5 @@
 <script setup>
-import { Dropdown, Menu, MenuItem, Flex, Popover, Empty } from 'ant-design-vue';
+import { Dropdown, Menu, MenuItem, Flex, Popover, Empty, Tabs, TabPane, Input, InputNumber, Select, SelectOption, Button } from 'ant-design-vue';
 import {ref, computed} from "vue"
 import {getAll} from "../../js/variableUtil"
 import BlockSelectableButton from './BlockSelectableButton.vue';
@@ -39,7 +39,13 @@ const interfaceControl = ref({
     openOverflow: false
 })
 const interfaceData = ref({
-    selectedPage: []
+    selectedPage: [],
+    selectedTab: "0",
+    setValue: {
+        number: 0,
+        string: "",
+        boolean: false
+    }
 })
 const variables = ref(getAll())
 
@@ -70,7 +76,25 @@ function handleValueOnChange(type, data) {
                     </Menu>
                 </div>
                 <div class="main-content-box">
-                    <div v-if="interfaceData.selectedPage[0] === 'value'" class="content-box"></div>
+                    <div v-if="interfaceData.selectedPage[0] === 'value'" class="content-box">
+                        <Flex :vertical="true" gap="small" style="margin-left: 8px;">
+                            <Tabs v-model:active-key="interfaceData.selectedTab">
+                                <TabPane key="0" tab="String">
+                                    <Input v-model:value="interfaceData.setValue.string" placeholder="Input your string here"></Input>
+                                </TabPane>
+                                <TabPane key="1" tab="Number">
+                                    <InputNumber v-model:value="interfaceData.setValue.number" placeholder="Numer"></InputNumber>
+                                </TabPane>
+                                <TabPane key="2" tab="Boolean">
+                                    <Select v-model:value="interfaceData.setValue.boolean">
+                                        <SelectOption :value="true">True</SelectOption>
+                                        <SelectOption :value="false">False</SelectOption>
+                                    </Select>
+                                </TabPane>
+                            </Tabs>
+                            <Button type="primary">Apply current value</Button>
+                        </Flex> 
+                    </div>
                     <div v-else-if="interfaceData.selectedPage[0] === 'var'" class="content-box">
                         <Flex :vertical="false" gap="small" wrap="wrap">
                             <VariableTag v-for="i in variables" :var-props="i" :enable-on-click="true" @click="handleValueOnChange('var', i)"></VariableTag>
