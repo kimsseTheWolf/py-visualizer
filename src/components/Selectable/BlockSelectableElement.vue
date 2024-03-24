@@ -4,6 +4,10 @@ import {ref, computed} from "vue"
 import {getAll} from "../../js/variableUtil"
 import BlockSelectableButton from './BlockSelectableButton.vue';
 import VariableTag from '../VariableTag.vue';
+import { useI18n } from "vue-i18n";
+
+const {t} = useI18n()
+
 /**
  * Properties of the element. Index is to indicate which element it is, and acceptType is the value tells the element what things are accepted
  */
@@ -98,20 +102,20 @@ function handleStaticValueOnChange() {
                     <div v-if="interfaceData.selectedPage[0] === 'value'" class="content-box">
                         <Flex :vertical="true" gap="small" style="margin-left: 8px;">
                             <Tabs v-model:active-key="interfaceData.selectedTab">
-                                <TabPane key="0" tab="String">
-                                    <Input v-model:value="interfaceData.setValue.string" placeholder="Input your string here"></Input>
+                                <TabPane key="0" :tab="t('general.string')">
+                                    <Input v-model:value="interfaceData.setValue.string" :placeholder="t('selectableElement.overflow.stringPlaceholder')"></Input>
                                 </TabPane>
-                                <TabPane key="1" tab="Number">
-                                    <InputNumber v-model:value="interfaceData.setValue.number" placeholder="Numer"></InputNumber>
+                                <TabPane key="1" :tab="t('general.number')">
+                                    <InputNumber v-model:value="interfaceData.setValue.number" :placeholder="t('selectableElement.overflow.numberPlaceholder')"></InputNumber>
                                 </TabPane>
-                                <TabPane key="2" tab="Boolean">
+                                <TabPane key="2" :tab="t('general.boolean')">
                                     <Select v-model:value="interfaceData.setValue.boolean">
                                         <SelectOption :value="true">True</SelectOption>
                                         <SelectOption :value="false">False</SelectOption>
                                     </Select>
                                 </TabPane>
                             </Tabs>
-                            <Button type="primary" @click="handleStaticValueOnChange">Apply current value</Button>
+                            <Button type="primary" @click="handleStaticValueOnChange">{{t('general.apply')}}</Button>
                         </Flex> 
                     </div>
                     <div v-else-if="interfaceData.selectedPage[0] === 'var'" class="content-box">
@@ -123,7 +127,7 @@ function handleStaticValueOnChange() {
                         </Flex>
                     </div>
                     <div v-else class="content-box full-center">
-                        Choose a data type from the menu on the left
+                        {{t('selectableElement.overflow.emptyPlaceholder')}}
                     </div>
                 </div>
             </div>

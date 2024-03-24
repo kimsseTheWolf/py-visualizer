@@ -5,6 +5,9 @@ import { ref, computed, reactive, toRefs, toRef } from 'vue';
 import {PlusCircleOutlined, ReloadOutlined} from "@ant-design/icons-vue"
 import { getAll, dataTypes, createNewVar, deleteVar, setValue } from "../js/variableUtil"
 import VariableTag from "./VariableTag.vue"
+import { useI18n } from "vue-i18n";
+
+const {t} = useI18n()
 
 const vars = ref([])
 const emits = defineEmits(["onVarChange"])
@@ -58,12 +61,12 @@ function createNewVariable() {
         value = {}
     }
     else {
-        message.error("创建变量出现错误：未知的数据类型")
+        message.error(t("variableManager.messages.unknownTypeError"))
         return
     }
     const result = createNewVar(key, type, value)
     if (!result) {
-        message.error("创建失败")
+        message.error(t("variableManager.messages.error"))
         return
     }
 
@@ -79,14 +82,14 @@ function createNewVariable() {
     newVarValue.string = ""
 
     // notify the user the process is finished
-    message.success("创建成功")
+    message.success(t("variableManager.messages.createSuccess"))
 }
 
 function handleVarDelete(id) {
     deleteVar(id)
     // refresh the list
     vars.value = getAll()
-    message.success("删除成功")
+    message.success(t("variableManager.messages.deleteSuccess"))
 }
 
 /**
@@ -109,17 +112,17 @@ function handleOnChange(info) {
 <template>
     <div class="main-block">
         <Flex :vertical="true" gap="small">
-            <div style="font-weight: bold; font-size: 15px;">变量管理</div>
+            <div style="font-weight: bold; font-size: 15px;">{{ t("variableManager.title") }}</div>
             <Flex :vertical="false" gap="small" align="center">
                 <Button size="small" type="primary" shape="round" @click="interfaceControl.showCreateVarModal = true">
                     <PlusCircleOutlined/>
                 </Button>
-                <Input placeholder="搜索变量"></Input>
+                <Input :placeholder="t('variableManager.searchVariablePlaceholder')"></Input>
             </Flex>
             <Flex v-if="vars.length == 0" justify="center" align="center">
                 <Empty>
                     <template #description>
-                        还没有创建任何变量，点击左上角添加
+                        {{ t("variableManager.emptyDescription") }}
                     </template>
                 </Empty>
             </Flex>
@@ -128,30 +131,30 @@ function handleOnChange(info) {
             </Flex>
         </Flex>
     </div>
-    <Modal v-model:open="interfaceControl.showCreateVarModal" title="创建新变量">
+    <Modal v-model:open="interfaceControl.showCreateVarModal" :title="t('variableManager.createModal.title')">
         <Form :model="newVarInfo" layout="vertical">
-                <FormItem label="变量名称" name="name" :rules="[{required: true, message: '请输入变量名称！'}]">
-                    <Input v-model:value="newVarInfo.name" placeholder="变量名"></Input>
+                <FormItem :label="t('variableManager.createModal.name.title')" name="name" :rules="[{required: true, message: t('variableManager.createModal.name.message')}]">
+                    <Input v-model:value="newVarInfo.name" :placeholder="t('variableManager.createModal.name.placeholder')"></Input>
                 </FormItem>
-                <FormItem label="类型" name="type" :rules="[{required: true, message: '请选择类型！'}]">
+                <FormItem :label="t('variableManager.createModal.type.title')" name="type" :rules="[{required: true, message: t('variableManager.createModal.type.message')}]">
                     <Select v-model:value="newVarInfo.type">
                         <SelectOption v-for="i in Object.keys(dataTypes)" :value="dataTypes[i]">{{ dataTypes[i] }}</SelectOption>
                     </Select>
                 </FormItem>
-                <FormItem v-if="newVarInfo.type === dataTypes.number" label="初始值" name="name" :rules="[{required: false, message: '请指定初始值！'}]">
+                <FormItem v-if="newVarInfo.type === dataTypes.number" :label="t('variableManager.createModal.value.title')" name="name" :rules="[{required: false, message: t('variableManager.createModal.value.message')}]">
                     <InputNumber v-model:value="newVarValue.number"></InputNumber>
                 </FormItem>
-                <FormItem v-if="newVarInfo.type === dataTypes.string" label="初始值" name="name" :rules="[{required: false, message: '请指定初始值！'}]">
-                       <Input placeholder="字符串初始值" v-model:value="newVarValue.string"></Input>
+                <FormItem v-if="newVarInfo.type === dataTypes.string" :label="t('variableManager.createModal.value.title')" name="name" :rules="[{required: false, message: t('variableManager.createModal.value.message')}]">
+                       <Input :placeholder="t('variableManager.createModal.value.placeholder')" v-model:value="newVarValue.string"></Input>
                 </FormItem>
-                <FormItem v-if="newVarInfo.type === dataTypes.boolean" label="初始值" name="name" :rules="[{required: false, message: '请指定初始值！'}]">
+                <FormItem v-if="newVarInfo.type === dataTypes.boolean" :label="t('variableManager.createModal.value.title')" name="name" :rules="[{required: false, message: t('variableManager.createModal.value.message')}]">
                     <Select v-model:value="newVarValue.boolean">
                         <SelectOption :value="true">True</SelectOption>
                         <SelectOption :value="false">False</SelectOption>
                     </Select>
                 </FormItem>
                 <FormItem>
-                    <Button type="primary" :disabled="!shouldEnableCreateBtn" @click="createNewVariable()">创建</Button>
+                    <Button type="primary" :disabled="!shouldEnableCreateBtn" @click="createNewVariable()">{{t('general.create')}}</Button>
                 </FormItem>
             </Form>
         <template #footer>

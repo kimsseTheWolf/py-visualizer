@@ -1,6 +1,25 @@
 {
+    "general": {
+        "ok": "OK",
+        "cancel": "Cancel",
+        "apply": "Apply",
+        "ignore": "Ignore",
+        "success": "Success",
+        "warning": "Warning",
+        "failed": "Failed",
+        "error": "Error",
+        "variable": "Variable",
+        "value": "Value",
+        "create": "Create",
+        "modify": "Modify",
+        "delete": "Delete",
+        "string": "String",
+        "number": "Number",
+        "boolean": "Boolean"
+    },
     "toolBar": {
         "defaultNewFileName": "New File",
+        "newFileNamePlaceholder": "New file name",
         "changeNameButton": "Change",
         "menu": {
             "file": {
@@ -31,6 +50,68 @@
             "direction": "Choose an desired language from the dropbox below, you need to refresh your page to apply changes:",
             "community1": "We also welcome people from the community to contribute on different language translations in order to bring this tool to everyone around the world.",
             "community2": "Please visit out GitHub Repository to have more information on translation contribution."
+        }
+    },
+    "variableManager": {
+        "title": "Variable Management",
+        "searchVariablePlaceholder": "Search variable",
+        "emptyDescription": "No variables yet, create a new one by clicking Add button above.",
+        "createModal": {
+            "title": "Create new variable",
+            "name": {
+                "title": "Variable Name",
+                "message": "Variable Name cannot be empty!",
+                "placeholder": "Variable name"
+            },
+            "type": {
+                "title": "Variable Type",
+                "message": "Variable Type cannot be empty!",
+                "placeholder": "Variable type"
+            },
+            "value": {
+                "title": "Variable Value",
+                "placeholder": "Variable initial value"
+            }
+        },
+        "messages": {
+            "unknownTypeError": "Error: Unknown Data Type!",
+            "error": "Unable to create variables!",
+            "createSuccess": "Create Successfully!",
+            "deleteSuccess": "Delete Successfully!"
+        }
+    },
+    "variableTag": {
+        "message": {
+            "success": "Variable information modified!"
+        },
+        "title": " details",
+        "name": "Name: ",
+        "type": "Type: ",
+        "initValue": "Initial Value: ",
+        "id": "Variable ID: ",
+        "edit": {
+            "title": "Edit Variable information",
+            "itemTitle": "New initial value",
+            "list": {
+                "addItem": "Add new list item",
+                "emptyDescription": "Empty list. Add a new item by clicking the add button above",
+                "elementPlaceholder": "Enter element value here"
+            },
+            "dictionary": {
+                "warning": "DO NOT set the same key names, otherwise manager will not work properly!",
+                "addItem": "Create new element",
+                "keyPlaceholder": "Key name",
+                "valuePlaceholder": "Value",
+                "emptyDescription": "Empty dictionary. Create a new element by clicking the add button above"
+            }
+        }
+    },
+    "selectableElement": {
+        "value": "Value",
+        "overflow": {
+            "stringPlaceholder": "Enter your string here",
+            "numberPlaceholder": "Number",
+            "emptyPlaceholder": "Select a type of value from the left"
         }
     }
 }

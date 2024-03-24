@@ -1,10 +1,13 @@
 <script setup>
 import {ref} from "vue"
+import { useI18n } from "vue-i18n";
+
+const {t} = useI18n()
 const props = defineProps(["content"])
 </script>
 <template>
     <div class="select-btn-main">
-        <div>{{ props.content === "" ? "Value" : props.content }}</div>
+        <div>{{ props.content === "" ? t('selectableElement.value') : props.content }}</div>
     </div>
 </template>
 <style scoped>

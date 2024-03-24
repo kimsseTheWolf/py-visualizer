@@ -127,7 +127,7 @@ function handleOnLoad() {
         <div class="row">
           <div class="file-name item" style="margin-left: 5px;">
             <div v-if="!interfaceControl.showFileNameInput">{{ fileName === "" ? t('toolBar.defaultNewFileName') : fileName }}</div>
-            <Input v-if="interfaceControl.showFileNameInput" placeholder="New File Name" v-model:value="fileName"/>
+            <Input v-if="interfaceControl.showFileNameInput" :placeholder="t('toolBar.newFileNamePlaceholder')" v-model:value="fileName"/>
           </div>
           <Button type="primary" size="small" @click="interfaceControl.showFileNameInput = !interfaceControl.showFileNameInput">
             <EditOutlined/>
