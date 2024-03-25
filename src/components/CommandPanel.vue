@@ -10,6 +10,7 @@ const currentBlocks = ref([])
 const isDragging = ref(false)
 const props = defineProps(["saveTrigger", "loadTrigger", "loadFileContent"])
 const emits = defineEmits(["onSaveTrigger", "onLoadTrigger"])
+const currScope = 0
 
 watchEffect(() => {
     if (props.saveTrigger) {
@@ -80,7 +81,17 @@ function handleValueOnChange(blockIndex, paramIndex, infos) {
         :move="()=>true">
             <template #item="{ element, index }">
                 <div>
-                    <Block :index="index" :id="element['seqID']" :content-template="element['visualize'][getCurrentLanguage()]" :code-template="element['code']" :is-in-command="true" @on-delete="handleDelete(index)" @on-value-change="handleValueOnChange" :slots="element['slots']"></Block>
+                    <Block 
+                    :index="index" 
+                    :id="element['seqID']" 
+                    :content-template="element['visualize'][getCurrentLanguage()]" 
+                    :code-template="element['code']" 
+                    :is-in-command="true" 
+                    @on-delete="handleDelete(index)" 
+                    @on-value-change="handleValueOnChange" 
+                    :slots="element['slots']" 
+                    :scope="currScope"
+                    ></Block>
                 </div>
             </template>
         </draggable>

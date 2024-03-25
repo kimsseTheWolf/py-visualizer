@@ -26,9 +26,9 @@
         "basic.cf.for": {
             "id": "basic.cf.for",
             "visualize": {
-                "default": "Do <[0]{accept{var&value}}> times",
-                "en-US": "Do <[0]{accept{var&value}}> times",
-                "zh-CN": "重复执行<[0]{accept{var&value}}>次"
+                "default": "Do <[0]{accept:{var&value}}> times <[1]{accept:{nested}}>",
+                "en-US": "Do <[0]{accept:{var&value}}> times <[1]{accept:{nested}}>",
+                "zh-CN": "重复执行<[0]{accept:{var&value}}>次 <[1]{accept:{nested}}>"
             },
             "exposes": {
                 "iterateIndicator": {
