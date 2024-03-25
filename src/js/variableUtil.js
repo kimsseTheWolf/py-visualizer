@@ -46,7 +46,7 @@ function isNameExists(key) {
  * Generate an ID for the variable
  * @returns ID for the variable
  */
-function generateVarID() {
+export function generateVarID() {
     let targetID = uuidv4()
 
     // replace all "-" to "_"
