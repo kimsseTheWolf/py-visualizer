@@ -1,24 +1,43 @@
 {
+    "general": {
+        "ok": "确定",
+        "cancel": "取消",
+        "apply": "应用",
+        "ignore": "忽略",
+        "success": "成功",
+        "warning": "警告",
+        "failed": "失败",
+        "error": "错误",
+        "variable": "变量",
+        "value": "值",
+        "create": "创建",
+        "modify": "修改",
+        "delete": "删除",
+        "string": "字符串",
+        "number": "数字",
+        "boolean": "布尔"
+    },
     "toolBar": {
         "defaultNewFileName": "新文件",
+        "newFileNamePlaceholder": "新文件名",
         "changeNameButton": "修改",
         "menu": {
             "file": {
                 "title": "文件",
                 "upload": "从本地上传",
-                "save": "保存",
+                "save": "保存到本地",
                 "exportMetacode": "以Metacode格式导出",
-                "exportPython": "以Python文件导出"
+                "exportPython": "以Python格式导出"
             },
             "edit": {
                 "title": "编辑",
                 "copy": "复制",
                 "paste": "粘贴",
-                "languages": "语言"
+                "languages": "语言设置"
             },
             "views": {
                 "title": "视图",
-                "codePreview": "切换代码预览窗口可见性"
+                "codePreview": "切换代码预览可见性"
             },
             "help": {
                 "title": "帮助",
@@ -27,10 +46,72 @@
             }
         },
         "languageSelector": {
-            "title": "选择一个语言",
-            "direction": "从下面的下拉菜单中选择系统显示语言，您需要刷新页面来应用设置",
-            "community1": "我们同时欢迎社区用户来帮助我们一起完善多语言支持，这样此工具就可以给全球的所有用户使用！",
-            "community2": "请前往我们的GitHub仓库来了解更多有关多语言支持。"
+            "title": "选择语言",
+            "direction": "从下拉菜单中选择一个您希望显示的语言，您可能需要刷新页面来保证所有翻译内容生效",
+            "community1": "我们欢迎所有人来帮助我们制作软件的翻译文件，这样全球的用户可以无障碍使用此软件！",
+            "community2": "请前往我们的GitHub仓库来了解详细信息！"
+        }
+    },
+    "variableManager": {
+        "title": "变量管理",
+        "searchVariablePlaceholder": "搜索变量",
+        "emptyDescription": "当前还没有变量，点击左上角创建按钮来创建第一个变量",
+        "createModal": {
+            "title": "创建新变量",
+            "name": {
+                "title": "变量名称",
+                "message": "变量名称不可以为空",
+                "placeholder": "变量名称"
+            },
+            "type": {
+                "title": "变量类型",
+                "message": "变量类型不可以为空",
+                "placeholder": "变量类型"
+            },
+            "value": {
+                "title": "变量初始值",
+                "placeholder": "变量初始值"
+            }
+        },
+        "messages": {
+            "unknownTypeError": "错误：位置的变量类型",
+            "error": "无法创建变量",
+            "createSuccess": "创建成功",
+            "deleteSuccess": "删除成功"
+        }
+    },
+    "variableTag": {
+        "message": {
+            "success": "变量信息修改成功"
+        },
+        "title": "的详细信息",
+        "name": "变量名称：",
+        "type": "变量类型",
+        "initValue": "初始值：",
+        "id": "变量ID：",
+        "edit": {
+            "title": "编辑变量信息",
+            "itemTitle": "新初始值",
+            "list": {
+                "addItem": "添加列表元素",
+                "emptyDescription": "空列表。单击添加按钮添加第一个列表元素",
+                "elementPlaceholder": "在此输入元素值"
+            },
+            "dictionary": {
+                "warning": "请勿设置两个相同的键值，否则某些功能将无法正常使用！",
+                "addItem": "添加字典元素",
+                "keyPlaceholder": "键",
+                "valuePlaceholder": "值",
+                "emptyDescription": "空字典。单击添加按钮添加第一个字典元素"
+            }
+        }
+    },
+    "selectableElement": {
+        "value": "值",
+        "overflow": {
+            "stringPlaceholder": "在此输入字符串",
+            "numberPlaceholder": "数字",
+            "emptyPlaceholder": "从左侧列表选择值类型"
         }
     }
 }
