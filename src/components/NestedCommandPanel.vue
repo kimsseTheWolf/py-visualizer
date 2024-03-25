@@ -74,6 +74,7 @@ function handleOnContentChange() {
                     @on-value-change="handleValueOnChange" 
                     :slots="element['slots']"
                     :scope="props.scope"
+                    :contexts="element['exposes']"
                     ></Block>
                 </div>
             </template>

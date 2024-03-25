@@ -91,6 +91,7 @@ function handleValueOnChange(blockIndex, paramIndex, infos) {
                     @on-value-change="handleValueOnChange" 
                     :slots="element['slots']" 
                     :scope="currScope"
+                    :contexts="element['exposes']"
                     ></Block>
                 </div>
             </template>

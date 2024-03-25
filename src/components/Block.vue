@@ -2,6 +2,7 @@
 import { message, notification } from 'ant-design-vue';
 import { MinusCircleOutlined } from "@ant-design/icons-vue"
 import { ref } from 'vue';
+import { createNewScope, createScopeVariable, deleteScope } from "../js/contextUtil"
 import draggableComponent from 'vuedraggable';
 import BlockSelectableElement from './Selectable/BlockSelectableElement.vue';
 import NestedCommandPanel from './NestedCommandPanel.vue';
@@ -22,7 +23,8 @@ const props = defineProps({
     "isInCommand": Boolean,
     "index": Number,
     "slots": Array,
-    "scope": Number
+    "scope": Number,
+    "contexts": Object // accepting context variables
 })
 
 const emits = defineEmits(["onDelete", "onValueChange"])
@@ -177,6 +179,30 @@ function regenerateTemplate() {
         processBlockContent()
     }
 }
+
+/**
+ * This function will help to process all the exposes of the block that would want to expose into the nested section
+ */
+function processExposes() {
+    if (props.contexts === undefined) {
+        return
+    }
+    // registering new scope for the nested exposures
+    createNewScope()
+    
+    // create a new scope var in the new scope
+    const [result, obj] = createScopeVariable()
+    if (!result) {
+        notification.error("An error occured while creating context elements for blocks. This might caused by a syntax error of the block template.")
+        deleteScope()
+        return
+    }
+
+    // TODO: Further steps here
+
+}
+
+processExposes()
 
 function handleDelete() {
     emits("onDelete")
