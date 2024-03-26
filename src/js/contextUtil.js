@@ -51,6 +51,15 @@ function isNameExistsGlobally(name) {
 }
 
 /**
+ * Check whether a scope is exists
+ * @param {Number} scope Number of the scope
+ * @returns Returns true if target scope does exists, otherwise returns false
+ */
+export function isScopeExists(scope) {
+    return scope < contextPool.length
+}
+
+/**
  * Delete the last scope in the pool, return the deleted item
  * @returns The last scope element, which is a list
  */
@@ -68,10 +77,6 @@ export function deleteScope() {
  */
 export function createScopeVariable(scope, name) {
     if (scope >= contextPool.length) {
-        return [false]
-    }
-    // create a new element to the target scope
-    if (isNameExistsInScope(scope, name)) {
         return [false]
     }
     let newObj = {

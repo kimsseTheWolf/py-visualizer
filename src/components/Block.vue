@@ -190,15 +190,9 @@ function processExposes() {
     // registering new scope for the nested exposures
     createNewScope()
     
-    // create a new scope var in the new scope
-    const [result, obj] = createScopeVariable()
-    if (!result) {
-        notification.error("An error occured while creating context elements for blocks. This might caused by a syntax error of the block template.")
-        deleteScope()
-        return
-    }
-
-    // TODO: Further steps here
+    // add all of the contexts into the next scope for this block if it is a nest block
+    const contexts = Object.keys(props.contexts)
+    
 
 }
 
