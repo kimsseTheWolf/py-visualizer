@@ -21,7 +21,9 @@ const props = defineProps({
     "codeTemplate": String,
     "isInCommand": Boolean,
     "index": Number,
-    "slots": Array
+    "slots": Array,
+    "blockExposes": Object, // exposes that the block will provide
+    "allExposes": Array // all exposess inherited from parent
 })
 
 const emits = defineEmits(["onDelete", "onValueChange"])
@@ -37,6 +39,7 @@ const patterns = {
  */
 const paramSlots = ref({})
 const contents = ref([])
+const convertedExposesList = ref([])
 
 /**
  * The variable to store the first time check template data for rerendering check
@@ -225,6 +228,7 @@ function getNestedSlotValue(index) {
         }
     }
 }
+
 </script>
 <template>
     <div class="main-block" :id="props.id">

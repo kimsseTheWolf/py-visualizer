@@ -50,6 +50,15 @@ const currentBlocks = computed(()=>{
 function cloneCopier(origin) {
     let newOrigin = JSON.parse(JSON.stringify(origin))
     newOrigin["seqID"] = newOrigin["id"] + "_" + uuidv4()
+
+    // process exposures
+    if (newOrigin["exposes"] !== undefined) {
+        const keys = Object.keys(newOrigin["exposes"])
+        for (let i = 0; i < keys.length; i++) {
+            newOrigin["exposes"][keys[i]]["id"] = keys[i] + "_" + uuidv4()
+        }
+    }
+    
     return JSON.parse(JSON.stringify(newOrigin))
 }
 
