@@ -70,7 +70,7 @@ function handleValueOnChange(blockIndex, paramIndex, infos) {
 
 </script>
 <template>
-    <!-- <div>{{ currentBlocks }}</div> -->
+    <div>{{ currentBlocks }}</div>
     <div class="main-box">
         <draggable
         :list="currentBlocks"
@@ -80,7 +80,17 @@ function handleValueOnChange(blockIndex, paramIndex, infos) {
         :move="()=>true">
             <template #item="{ element, index }">
                 <div>
-                    <Block :index="index" :id="element['seqID']" :content-template="element['visualize'][getCurrentLanguage()]" :code-template="element['code']" :is-in-command="true" @on-delete="handleDelete(index)" @on-value-change="handleValueOnChange" :slots="element['slots']"></Block>
+                    <Block 
+                    :index="index" 
+                    :id="element['seqID']" 
+                    :content-template="element['visualize'][getCurrentLanguage()]" 
+                    :code-template="element['code']" 
+                    :is-in-command="true" 
+                    @on-delete="handleDelete(index)" 
+                    @on-value-change="handleValueOnChange" 
+                    :slots="element['slots']"
+                    :block-exposes="element['exposes']"
+                    :all-exposes="[]"></Block>
                 </div>
             </template>
         </draggable>
