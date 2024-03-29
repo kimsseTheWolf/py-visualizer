@@ -39,7 +39,7 @@ const patterns = {
  */
 const paramSlots = ref({})
 const contents = ref([])
-const convertedExposesList = ref([])
+const processedAllExposes = ref([])
 
 /**
  * The variable to store the first time check template data for rerendering check
@@ -226,6 +226,21 @@ function getNestedSlotValue(index) {
             console.log(props.slots[index])
             return props.slots[index]
         }
+    }
+}
+
+const exposesSearchPatterns = {
+    indexedNamePattern: /^.*-\d$/
+}
+
+/**
+ * This function will put all the exposes defined for the block into the child scope
+ */
+function insertBlockExposesToScope() {
+    const exposes = Object.keys(props.blockExposes)
+    
+    for (let i = 0; i < exposes.length; i++) {
+
     }
 }
 
