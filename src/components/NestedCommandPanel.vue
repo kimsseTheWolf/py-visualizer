@@ -16,7 +16,7 @@ const props = defineProps({
     "blocks": Array,
     "tabIndex": Number,
     "index": Number,
-    "all-exposes": Array
+    "allExposes": Array
 })
 
 /**
@@ -51,6 +51,15 @@ function handleOnContentChange() {
     emits("onContentChange", props.index, currentBlocks.value)
 }
 
+function processExposes(exp) {
+    if (exp === undefined) {
+        console.log("Processor: Exposes is undefined")
+        return undefined
+    }
+    console.log("Nested process: ", JSON.parse(JSON.stringify(exp)))
+    return JSON.parse(JSON.stringify(exp))
+}
+
 </script>
 <template>
     <!-- <div>{{ currentBlocks }}</div> -->
@@ -74,7 +83,7 @@ function handleOnContentChange() {
                     @on-value-change="handleValueOnChange" 
                     :slots="element['slots']"
                     :block-exposes="element['exposes']"
-                    :all-exposes="JSON.parse(JSON.stringify(props['all-exposes']))"></Block>
+                    :all-exposes="processExposes(props.allExposes)"></Block>
                 </div>
             </template>
         </draggable>

@@ -237,22 +237,32 @@ const exposesSearchPatterns = {
  * This function will put all the exposes defined for the block into the child scope
  */
 function insertBlockExposesToScope() {
+    if (props.allExposes === undefined || props.allExposes === null) {
+        processedAllExposes.value = []
+    }
+    else {
+        processedAllExposes.value = JSON.parse(JSON.stringify(props.allExposes))
+    }
+    
+    if (props.blockExposes === undefined || props.blockExposes === null) {
+        console.log("No block exposes found for block: ", props.id)
+        return
+    }
     const exposes = Object.keys(props.blockExposes)
-    processedAllExposes.value = JSON.parse(JSON.stringify(props.allExposes))
     
     // append all exposes into the child-global scope
     for (let i = 0; i < exposes.length; i++) {
         // check is existed
         let originNameExists = false
         for (let j = 0; j < processedAllExposes.value.length; j++) {
-            if (processedAllExposes.value[j].default === exposes[i].default) {
+            if (processedAllExposes.value[j].default === props.blockExposes[exposes[i]].default) {
                 originNameExists = true
                 break
             }
         }
         if (originNameExists) {
             // append indexed name, find the largest index name
-            let maxIndex = -1
+            let maxIndex = 1
             for (let j = 0; j < processedAllExposes.value.length; j++) {
                 if (exposesSearchPatterns.indexedNamePattern.test(processedAllExposes.value[j].default)) {
                     let index = parseInt(processedAllExposes.value[j].default.split("-")[1])
@@ -260,13 +270,27 @@ function insertBlockExposesToScope() {
                 }
             }
             // TODO: process all blocks exposes name
+            let excludeTags = ["id"]
+            let currObject = JSON.parse(JSON.stringify(props.blockExposes[exposes[i]]))
+            for (let i = 0; i < Object.keys(currObject).length; i++) {
+                if (!excludeTags.includes(Object.keys(currObject)[i])) {
+                    let name = currObject[Object.keys(currObject)[i]].split("-")[0]
+                    currObject[Object.keys(currObject)[i]] = name + "-" + (maxIndex + 1)
+                }
+            }
             
+            // push to the main expose
+            processedAllExposes.value.push(currObject)
+            console.log("Processed all exposes: ", processedAllExposes.value)
         }
         else {
             processedAllExposes.value.push(props.blockExposes[exposes[i]])
+            console.log("Processed all exposes: ", processedAllExposes.value)
         }
     }
 }
+
+insertBlockExposesToScope()
 
 </script>
 <template>
@@ -275,7 +299,7 @@ function insertBlockExposesToScope() {
         <template v-for="i in contents">
             <div v-if="i.type === 'content'" class="inner-element">{{ i.content }}</div>
             <BlockSelectableElement v-if="i.type === 'param' && (i.acceptTypes[0] !== 'nested' && i.acceptTypes.length >= 1)" :accept-type="i.acceptTypes" :index="i.index" :is-in-command="props.isInCommand" @on-value-change="handleOnValueChange" :value="getSlotValue(i.index)"></BlockSelectableElement>
-            <NestedCommandPanel v-if="i.type === 'param' && (i.acceptTypes[0] === 'nested' && i.acceptTypes.length === 1)" :blocks="getNestedSlotValue(i.index)" :index="i.index" @on-content-change="handleOnValueChange"></NestedCommandPanel>
+            <NestedCommandPanel v-if="i.type === 'param' && (i.acceptTypes[0] === 'nested' && i.acceptTypes.length === 1)" :blocks="getNestedSlotValue(i.index)" :index="i.index" @on-content-change="handleOnValueChange" :all-exposes="processedAllExposes"></NestedCommandPanel>
         </template>
         <MinusCircleOutlined class="remove-icon-btn" v-if="props.isInCommand" @click="handleDelete"></MinusCircleOutlined>
     </div>

@@ -74,7 +74,11 @@ console.log("Properties: ", props["currentid"])
     :clone="(origin)=>{return cloneCopier(origin)}"
     item-key="id">
         <template #item="{ element }">
-            <Block :id="element" :content-template="element['visualize'][getCurrentLanguage()]" :code-template="element['code']" :slots="element['slots']"></Block>
+            <Block 
+            :id="element" 
+            :content-template="element['visualize'][getCurrentLanguage()]" 
+            :code-template="element['code']" 
+            :slots="element['slots']"></Block>
         </template>
     </draggable>
     <!-- <Block v-for="i in currentBlocks['blocks']" :id="i['code']" :content-template="i['visualize'][getCurrentLanguage()]" :code-template="i['code']"></Block> -->

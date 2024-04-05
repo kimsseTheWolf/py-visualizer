@@ -68,6 +68,14 @@ function handleValueOnChange(blockIndex, paramIndex, infos) {
     currentBlocks.value[blockIndex]["slots"][paramIndex] = infos
 }
 
+function processExposes(exp) {
+    if (exp === undefined) {
+        console.log("Processor: Exposes is undefined")
+        return undefined
+    }
+    return JSON.parse(JSON.stringify(exp))
+}
+
 </script>
 <template>
     <div>{{ currentBlocks }}</div>
@@ -89,7 +97,7 @@ function handleValueOnChange(blockIndex, paramIndex, infos) {
                     @on-delete="handleDelete(index)" 
                     @on-value-change="handleValueOnChange" 
                     :slots="element['slots']"
-                    :block-exposes="element['exposes']"
+                    :block-exposes="processExposes(element['exposes'])"
                     :all-exposes="[]"></Block>
                 </div>
             </template>
