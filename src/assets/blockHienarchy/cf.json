@@ -22,6 +22,22 @@
                 "zh-CN": "如果 <[0]{accept:{var&value}}>, 那么 <[1]{accept:{nested}}>, 否则 <[2]{accept:{nested}}>"
             },
             "code": "print(<0>)"
+        },
+        "basic.cf.for": {
+            "id": "basic.cf.for",
+            "visualize": {
+                "default": "Do <[0]{accept:{var&value}}> times <[1]{accept:{nested}}>",
+                "en-US": "Do <[0]{accept:{var&value}}> times <[1]{accept:{nested}}>",
+                "zh-CN": "重复执行<[0]{accept:{var&value}}>次 <[1]{accept:{nested}}>"
+            },
+            "exposes": {
+                "iterateIndicator": {
+                    "default": "Current Iterate times",
+                    "en-US": "Current Iterate times",
+                    "zh-CN": "当前循环次数"
+                }
+            },
+            "code": "for <expose:iterateIndicator> in range(<0>)"
         }
     }
 }

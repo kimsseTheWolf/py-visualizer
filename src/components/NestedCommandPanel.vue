@@ -15,7 +15,8 @@ import Block from "./Block.vue"
 const props = defineProps({
     "blocks": Array,
     "tabIndex": Number,
-    "index": Number
+    "index": Number,
+    "allExposes": Array
 })
 
 /**
@@ -50,6 +51,15 @@ function handleOnContentChange() {
     emits("onContentChange", props.index, currentBlocks.value)
 }
 
+function processExposes(exp) {
+    if (exp === undefined) {
+        console.log("Processor: Exposes is undefined")
+        return undefined
+    }
+    console.log("Nested process: ", JSON.parse(JSON.stringify(exp)))
+    return JSON.parse(JSON.stringify(exp))
+}
+
 </script>
 <template>
     <!-- <div>{{ currentBlocks }}</div> -->
@@ -63,7 +73,17 @@ function handleOnContentChange() {
         :move="()=>true">
             <template #item="{ element, index }">
                 <div>
-                    <Block :index="index" :id="element['seqID']" :content-template="element['visualize'][getCurrentLanguage()]" :code-template="element['code']" :is-in-command="true" @on-delete="handleDelete(index)" @on-value-change="handleValueOnChange" :slots="element['slots']"></Block>
+                    <Block 
+                    :index="index" 
+                    :id="element['seqID']" 
+                    :content-template="element['visualize'][getCurrentLanguage()]" 
+                    :code-template="element['code']" 
+                    :is-in-command="true" 
+                    @on-delete="handleDelete(index)" 
+                    @on-value-change="handleValueOnChange" 
+                    :slots="element['slots']"
+                    :block-exposes="element['exposes']"
+                    :all-exposes="processExposes(props.allExposes)"></Block>
                 </div>
             </template>
         </draggable>
