@@ -238,9 +238,33 @@ const exposesSearchPatterns = {
  */
 function insertBlockExposesToScope() {
     const exposes = Object.keys(props.blockExposes)
+    processedAllExposes.value = JSON.parse(JSON.stringify(props.allExposes))
     
+    // append all exposes into the child-global scope
     for (let i = 0; i < exposes.length; i++) {
-
+        // check is existed
+        let originNameExists = false
+        for (let j = 0; j < processedAllExposes.value.length; j++) {
+            if (processedAllExposes.value[j].default === exposes[i].default) {
+                originNameExists = true
+                break
+            }
+        }
+        if (originNameExists) {
+            // append indexed name, find the largest index name
+            let maxIndex = -1
+            for (let j = 0; j < processedAllExposes.value.length; j++) {
+                if (exposesSearchPatterns.indexedNamePattern.test(processedAllExposes.value[j].default)) {
+                    let index = parseInt(processedAllExposes.value[j].default.split("-")[1])
+                    maxIndex = Math.max(maxIndex, index)
+                }
+            }
+            // TODO: process all blocks exposes name
+            
+        }
+        else {
+            processedAllExposes.value.push(props.blockExposes[exposes[i]])
+        }
     }
 }
 
